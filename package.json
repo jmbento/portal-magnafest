@@ -1,0 +1,45 @@
+{
+  "name": "canapev",
+  "version": "1.0.0",
+  "description": "Marketplace Nacional de Eventos",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "supabase:start": "supabase start",
+    "supabase:stop": "supabase stop",
+    "supabase:status": "supabase status"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
+    "@supabase/supabase-js": "^2.47.15",
+    "lucide-react": "^0.562.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "react-hook-form": "^7.69.0",
+    "react-markdown": "^10.1.0",
+    "react-router-dom": "^7.11.0",
+    "use-debounce": "^10.0.6",
+    "zod": "^4.2.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.2",
+    "autoprefixer": "^10.4.23",
+    "postcss": "^8.5.6",
+    "supabase": "^2.67.3",
+    "tailwindcss": "^3.4.19",
+    "typescript": "^5.9.3",
+    "vite": "^6.0.5"
+  },
+  "keywords": [
+    "marketplace",
+    "eventos",
+    "supabase",
+    "brasil"
+  ],
+  "author": "",
+  "license": "MIT"
+}
