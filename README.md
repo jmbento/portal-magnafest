@@ -1,4 +1,4 @@
-# 🎯 CANAPEV - Marketplace Nacional de Eventos
+# 🎯 MAGNAFEST - Portal de Profissionais para Eventos
 
 Sistema completo para marketplace de eventos com Supabase + React/Vue/Next.js
 
@@ -10,7 +10,7 @@ Sistema completo para marketplace de eventos com Supabase + React/Vue/Next.js
 2. Crie uma conta (se não tiver)
 3. Clique em **"New Project"**
 4. Preencha:
-   - **Name**: CANAPEV
+   - **Name**: MAGNAFEST
    - **Database Password**: Escolha uma senha forte
    - **Region**: South America (São Paulo)
 5. Aguarde ~2 minutos até o projeto ser criado

@@ -1,6 +1,6 @@
 /**
  * =====================================================================
- * CANAPEV - Página de Login
+ * MAGNAFEST - Página de Login
  * =====================================================================
  * Autenticação via email/senha ou OAuth
  */
@@ -83,7 +83,7 @@ export default function LoginPage() {
           <div className="text-center mb-8">
             <Link to="/">
               <h1 className="text-3xl font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent mb-2">
-                🎯 CANAPEV
+                🎯 Portal MagnaFest
               </h1>
             </Link>
             <p className="text-gray-600">

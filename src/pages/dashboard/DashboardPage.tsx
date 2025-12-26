@@ -1,6 +1,6 @@
 /**
  * =====================================================================
- * CANAPEV - Dashboard do Usuário
+ * MAGNAFEST - Dashboard do Usuário
  * =====================================================================
  * Página privada para gerenciar anúncios próprios
  */

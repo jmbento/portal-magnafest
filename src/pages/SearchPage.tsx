@@ -1,6 +1,6 @@
 /**
  * =====================================================================
- * CANAPEV - Página de Busca de Anúncios
+ * MAGNAFEST - Página de Busca de Anúncios
  * =====================================================================
  * SPA client-side com URL state management via React Router
  */
@@ -213,11 +213,11 @@ export default function SearchPage() {
   // ================================================================
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-secondary-50">
+    <div className="min-h-screen bg-magna-black">
       {/* ============================================================
           HEADER - Sticky com navegação
           ============================================================ */}
-      <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-40">
+      <header className="bg-magna-dark shadow-lg border-b border-white/10 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             {/* Logo e Breadcrumb */}
@@ -226,12 +226,12 @@ export default function SearchPage() {
                 onClick={() => navigate('/')}
                 className="hover:opacity-80 transition-opacity"
               >
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
-                  🎯 CANAPEV
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-magna-violet to-magna-magenta bg-clip-text text-transparent">
+                  🎯 Portal MagnaFest
                 </h1>
               </button>
-              <div className="hidden sm:block h-6 w-px bg-gray-300" />
-              <div className="hidden sm:flex items-center gap-2 text-gray-600">
+              <div className="hidden sm:block h-6 w-px bg-white/20" />
+              <div className="hidden sm:flex items-center gap-2 text-gray-300">
                 <SearchIcon className="w-5 h-5" />
                 <span className="font-medium">Buscar Anúncios</span>
               </div>
@@ -241,13 +241,13 @@ export default function SearchPage() {
             <nav className="flex items-center gap-4">
               <button
                 onClick={() => navigate('/')}
-                className="text-gray-600 hover:text-primary-600 transition-colors"
+                className="text-gray-400 hover:text-magna-cyan transition-colors"
               >
                 Início
               </button>
               <button
                 onClick={() => navigate('/create')}
-                className="btn-primary px-4 py-2 text-sm"
+                className="px-4 py-2 text-sm bg-gradient-to-r from-magna-violet to-magna-magenta text-white font-bold rounded-lg hover:opacity-90 transition-opacity"
               >
                 Criar Anúncio
               </button>

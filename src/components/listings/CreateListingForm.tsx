@@ -1,6 +1,6 @@
 /**
  * =====================================================================
- * CANAPEV - Formulário de Criação de Anúncio
+ * MAGNAFEST - Formulário de Criação de Anúncio
  * =====================================================================
  * Componente completo com upload de múltiplas imagens e validação
  */

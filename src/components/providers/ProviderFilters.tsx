@@ -7,7 +7,7 @@
 
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Search, Filter } from 'lucide-react';
+import { Search, Filter, TrendingUp } from 'lucide-react';
 
 // =====================================================================
 // CATEGORIAS (Hardcoded por enquanto)
@@ -36,6 +36,7 @@ export default function ProviderFilters() {
   const [searchTerm, setSearchTerm] = useState(searchParams.get('q') || '');
   const [city, setCity] = useState(searchParams.get('city') || '');
   const [category, setCategory] = useState(searchParams.get('cat') || 'Todos');
+  const [sortBy, setSortBy] = useState(searchParams.get('sort') || 'recent');
 
   // Debounce timer
   useEffect(() => {
@@ -44,7 +45,7 @@ export default function ProviderFilters() {
     }, 500);
 
     return () => clearTimeout(timeout);
-  }, [searchTerm, city, category]);
+  }, [searchTerm, city, category, sortBy]);
 
   // ================================================================
   // UPDATE URL
@@ -55,6 +56,7 @@ export default function ProviderFilters() {
     if (searchTerm.trim()) params.q = searchTerm.trim();
     if (city.trim()) params.city = city.trim();
     if (category !== 'Todos') params.cat = category;
+    if (sortBy !== 'recent') params.sort = sortBy; // Apenas adiciona se não for padrão
 
     setSearchParams(params);
   };
@@ -84,7 +86,7 @@ export default function ProviderFilters() {
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Ex: João, Canapev..."
+              placeholder="Ex: João, MagnaFest..."
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-colors"
             />
           </div>
@@ -125,6 +127,25 @@ export default function ProviderFilters() {
         </div>
       </div>
 
+      {/* Ordenação */}
+      <div className="mt-4">
+        <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg border border-purple-100">
+          <TrendingUp className="w-5 h-5 text-purple-600" />
+          <label htmlFor="sortBy" className="text-sm font-medium text-gray-700">
+            Ordenar por:
+          </label>
+          <select
+            id="sortBy"
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-colors bg-white font-medium text-gray-900"
+          >
+            <option value="recent">📅 Mais Recentes</option>
+            <option value="popular">🔥 Mais Populares (Favoritos)</option>
+          </select>
+        </div>
+      </div>
+
       {/* Active Filters Display */}
       {(searchTerm || city || category !== 'Todos') && (
         <div className="mt-4 pt-4 border-t border-gray-200">
@@ -152,6 +173,7 @@ export default function ProviderFilters() {
                 setSearchTerm('');
                 setCity('');
                 setCategory('Todos');
+                setSortBy('recent');
                 setSearchParams({});
               }}
               className="text-sm text-gray-600 hover:text-gray-900 font-medium transition-colors"

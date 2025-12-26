@@ -1,6 +1,6 @@
 /**
  * =====================================================================
- * CANAPEV - Cliente Supabase
+ * MAGNAFEST - Cliente Supabase
  * =====================================================================
  * Cliente singleton do Supabase configurado para Vite + TypeScript
  */

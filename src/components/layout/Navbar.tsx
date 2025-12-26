@@ -1,6 +1,6 @@
 /**
  * =====================================================================
- * CANAPEV - Navbar
+ * MAGNAFEST - Navbar
  * =====================================================================
  * Menu de navegação responsivo com autenticação e active state
  */
@@ -72,7 +72,7 @@ export default function Navbar() {
   // RENDER
   // ================================================================
   return (
-    <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200 shadow-sm">
+    <nav className="sticky top-0 z-50 bg-magna-dark/95 backdrop-blur-md border-b border-white/10 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -82,8 +82,10 @@ export default function Navbar() {
               className="flex items-center gap-2 hover:opacity-80 transition-opacity"
               onClick={closeMobileMenu}
             >
-              <span className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
-                🎯 CANAPEV
+              <span className="flex items-center gap-1.5">
+                <span className="text-lg font-normal text-gray-300">Portal</span>
+                <span className="text-2xl font-extrabold uppercase tracking-tight text-white">MAGNA</span>
+                <span className="text-2xl font-extrabold uppercase tracking-tight bg-gradient-to-r from-magna-violet via-magna-magenta to-magna-violet bg-clip-text text-transparent animate-text-flow">FEST</span>
               </span>
             </Link>
           </div>
@@ -95,8 +97,8 @@ export default function Navbar() {
               to="/search"
               className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors font-medium ${
                 isActive('/search')
-                  ? 'text-primary-600 bg-primary-50'
-                  : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50'
+                  ? 'text-magna-cyan bg-magna-cyan/10'
+                  : 'text-gray-300 hover:text-magna-cyan hover:bg-white/5'
               }`}
             >
               <Search className="w-4 h-4" />
@@ -112,8 +114,8 @@ export default function Navbar() {
                   to={link.href}
                   className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors font-medium ${
                     isActive(link.href)
-                      ? 'text-primary-600 bg-primary-50'
-                      : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50'
+                      ? 'text-magna-cyan bg-magna-cyan/10'
+                      : 'text-gray-300 hover:text-magna-cyan hover:bg-white/5'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -130,7 +132,7 @@ export default function Navbar() {
                 {/* Botão Anunciar */}
                 <Link
                   to="/create"
-                  className="btn-primary flex items-center gap-2 px-4 py-2"
+                  className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-magna-violet to-magna-magenta text-white font-bold rounded-lg hover:opacity-90 transition-opacity"
                 >
                   <PlusCircle className="w-4 h-4" />
                   Anunciar
@@ -140,9 +142,9 @@ export default function Navbar() {
                 <div className="relative">
                   <button
                     onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                    className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                    className="flex items-center gap-2 p-2 rounded-lg hover:bg-white/10 transition-colors"
                   >
-                    <div className="w-8 h-8 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full flex items-center justify-center text-white font-semibold">
+                    <div className="w-8 h-8 bg-gradient-to-r from-magna-violet to-magna-magenta rounded-full flex items-center justify-center text-white font-semibold">
                       {user.email?.[0].toUpperCase()}
                     </div>
                   </button>
@@ -157,16 +159,16 @@ export default function Navbar() {
                       />
 
                       {/* Menu */}
-                      <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-20">
-                        <div className="px-4 py-3 border-b border-gray-100">
-                          <p className="text-sm font-medium text-gray-900 truncate">
+                      <div className="absolute right-0 mt-2 w-56 bg-magna-dark rounded-lg shadow-lg border border-white/20 py-2 z-20">
+                        <div className="px-4 py-3 border-b border-white/10">
+                          <p className="text-sm font-medium text-white truncate">
                             {user.email}
                           </p>
                         </div>
 
                         <Link
                           to="/dashboard"
-                          className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                          className="flex items-center gap-3 px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors"
                           onClick={() => setIsUserMenuOpen(false)}
                         >
                           <User className="w-4 h-4" />
@@ -186,7 +188,7 @@ export default function Navbar() {
                 </div>
               </>
             ) : (
-              <Link to="/login" className="btn-primary px-6 py-2">
+              <Link to="/login" className="px-6 py-2 bg-gradient-to-r from-magna-violet to-magna-magenta text-white font-bold rounded-lg hover:opacity-90 transition-opacity">
                 Entrar
               </Link>
             )}
@@ -195,12 +197,12 @@ export default function Navbar() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+            className="md:hidden p-2 rounded-lg hover:bg-white/10 transition-colors"
           >
             {isMobileMenuOpen ? (
-              <X className="w-6 h-6 text-gray-700" />
+              <X className="w-6 h-6 text-white" />
             ) : (
-              <Menu className="w-6 h-6 text-gray-700" />
+              <Menu className="w-6 h-6 text-white" />
             )}
           </button>
         </div>
@@ -208,15 +210,15 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden border-t border-gray-200 bg-white">
+        <div className="md:hidden border-t border-white/10 bg-magna-dark">
           <div className="px-4 py-4 space-y-2">
             {/* Search */}
             <Link
               to="/search"
               className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
                 isActive('/search')
-                  ? 'bg-primary-50 text-primary-600 font-semibold'
-                  : 'text-gray-700 hover:bg-gray-50'
+                  ? 'bg-magna-cyan/10 text-magna-cyan font-semibold'
+                  : 'text-gray-300 hover:bg-white/5 hover:text-white'
               }`}
               onClick={closeMobileMenu}
             >
@@ -233,8 +235,8 @@ export default function Navbar() {
                   to={link.href}
                   className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
                     isActive(link.href)
-                      ? 'bg-primary-50 text-primary-600 font-semibold'
-                      : 'text-gray-700 hover:bg-gray-50'
+                      ? 'bg-magna-cyan/10 text-magna-cyan font-semibold'
+                      : 'text-gray-300 hover:bg-white/5 hover:text-white'
                   }`}
                   onClick={closeMobileMenu}
                 >
@@ -245,7 +247,7 @@ export default function Navbar() {
             })}
 
             {/* Divider */}
-            <div className="border-t border-gray-200 my-3" />
+            <div className="border-t border-white/10 my-3" />
 
             {user ? (
               <>
@@ -264,8 +266,8 @@ export default function Navbar() {
                   to="/dashboard"
                   className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
                     isActive('/dashboard')
-                      ? 'bg-primary-50 text-primary-600 font-semibold'
-                      : 'text-gray-700 hover:bg-gray-50'
+                      ? 'bg-magna-cyan/10 text-magna-cyan font-semibold'
+                      : 'text-gray-300 hover:bg-white/5 hover:text-white'
                   }`}
                   onClick={closeMobileMenu}
                 >
@@ -274,8 +276,8 @@ export default function Navbar() {
                 </Link>
 
                 {/* User Info & Logout */}
-                <div className="border-t border-gray-200 pt-3 mt-3">
-                  <div className="px-3 py-2 text-sm text-gray-600 truncate">
+                <div className="border-t border-white/10 pt-3 mt-3">
+                  <div className="px-3 py-2 text-sm text-gray-400 truncate">
                     {user.email}
                   </div>
                   <button

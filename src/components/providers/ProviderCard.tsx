@@ -1,12 +1,14 @@
 /**
  * =====================================================================
- * ProviderCard - Cartão de Visita Digital
+ * ProviderCard - Cartão de Profissional (Layout Horizontal - Job Board Style)
  * =====================================================================
- * Card inteligente que se adapta aos dados disponíveis
+ * Card horizontal com avatar à esquerda, dados no centro, ações à direita
  */
 
-import { MapPin, Phone, Instagram, Globe, CheckCircle, User } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { MapPin, Phone, CheckCircle } from 'lucide-react';
 import type { Provider } from '../../types/providers';
+import FavoriteButton from '../ui/FavoriteButton';
 
 // =====================================================================
 // PROPS
@@ -21,9 +23,8 @@ interface ProviderCardProps {
 // =====================================================================
 
 export default function ProviderCard({ provider }: ProviderCardProps) {
-  // Extrair contatos do JSONB
-  const contacts = provider.contact_info || {};
-  const hasAnyContact = !!(contacts.whatsapp || contacts.instagram || contacts.website || contacts.email);
+  // Verificar se tem algum contato disponível
+  const hasWhatsApp = !!provider.whatsapp;
 
   // Gerar iniciais para avatar
   const getInitials = (name: string): string => {
@@ -36,137 +37,92 @@ export default function ProviderCard({ provider }: ProviderCardProps) {
   };
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden">
-      {/* Header */}
-      <div className="p-6 pb-4">
-        <div className="flex items-start gap-4">
-          {/* Avatar */}
-          <div className="flex-shrink-0">
-            {provider.avatar_url ? (
-              <img
-                src={provider.avatar_url}
-                alt={provider.name}
-                className="w-16 h-16 rounded-full object-cover border-2 border-gray-100"
-              />
-            ) : (
-              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center">
-                <span className="text-white font-bold text-lg">
-                  {getInitials(provider.name)}
-                </span>
-              </div>
-            )}
-          </div>
+    <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+        {/* Coluna 1: Identidade (Avatar + Nome + Categoria) */}
+        <div className="flex items-center gap-4 flex-1 w-full md:w-auto">
+          {/* Avatar Quadrado */}
+          {provider.avatar_url || provider.logo_url ? (
+            <img
+              src={provider.avatar_url || provider.logo_url || ''}
+              alt={provider.name}
+              className="rounded-lg w-16 h-16 object-cover flex-shrink-0"
+            />
+          ) : (
+            <div className="rounded-lg w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center flex-shrink-0">
+              <span className="text-white font-bold text-xl">
+                {getInitials(provider.name)}
+              </span>
+            </div>
+          )}
 
-          {/* Nome e Badge */}
+          {/* Nome e Categoria */}
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
-              <h3 className="text-lg font-bold text-gray-900 truncate">
-                {provider.name}
-              </h3>
+              <Link 
+                to={`/profissionais/${provider.slug}`}
+                className="hover:text-indigo-600 transition-colors"
+              >
+                <h3 className="text-lg font-bold text-slate-800 hover:text-indigo-600 transition-colors truncate">
+                  {provider.name}
+                </h3>
+              </Link>
               {provider.is_verified && (
-                <div className="flex-shrink-0">
-                  <CheckCircle className="w-5 h-5 text-blue-500 fill-blue-100" />
-                </div>
+                <CheckCircle className="w-4 h-4 text-blue-500 fill-blue-100 flex-shrink-0" />
               )}
             </div>
-
-            {/* Categoria e Localização */}
-            <div className="flex items-center gap-2 text-sm text-gray-600">
-              {provider.category && (
-                <>
-                  <span className="font-medium">{provider.category}</span>
-                  <span className="text-gray-400">•</span>
-                </>
-              )}
-              <div className="flex items-center gap-1">
-                <MapPin className="w-3.5 h-3.5" />
-                <span>{provider.city}, {provider.state}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Descrição */}
-      {provider.description && (
-        <div className="px-6 pb-4">
-          <p className="text-sm text-gray-600 line-clamp-2">
-            {provider.description}
-          </p>
-        </div>
-      )}
-
-      {/* Footer com Ações */}
-      <div className="px-6 pb-6 pt-2">
-        {hasAnyContact ? (
-          <div className="grid grid-cols-2 gap-2">
-            {/* WhatsApp */}
-            {contacts.whatsapp && (
-              <a
-                href={`https://wa.me/${contacts.whatsapp.replace(/\D/g, '')}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 px-3 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition-colors"
-              >
-                <Phone className="w-4 h-4" />
-                WhatsApp
-              </a>
-            )}
-
-            {/* Instagram */}
-            {contacts.instagram && (
-              <a
-                href={contacts.instagram.startsWith('http') ? contacts.instagram : `https://instagram.com/${contacts.instagram.replace('@', '')}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 px-3 py-2 bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium rounded-lg transition-colors"
-              >
-                <Instagram className="w-4 h-4" />
-                Instagram
-              </a>
-            )}
-
-            {/* Website */}
-            {contacts.website && (
-              <a
-                href={contacts.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 px-3 py-2 bg-gray-600 hover:bg-gray-700 text-white text-sm font-medium rounded-lg transition-colors col-span-2"
-              >
-                <Globe className="w-4 h-4" />
-                Visitar Site
-              </a>
-            )}
-
-            {/* Email */}
-            {contacts.email && !contacts.website && (
-              <a
-                href={`mailto:${contacts.email}`}
-                className="flex items-center justify-center gap-2 px-3 py-2 bg-gray-600 hover:bg-gray-700 text-white text-sm font-medium rounded-lg transition-colors col-span-2"
-              >
-                <Globe className="w-4 h-4" />
-                Enviar Email
-              </a>
+            {provider.category && (
+              <p className="text-sm text-gray-500">{provider.category}</p>
             )}
           </div>
-        ) : (
-          // Perfil "Fantasma" - Sem contatos
-          <div className="space-y-2">
-            <button
-              disabled
-              className="w-full px-3 py-2 bg-gray-100 text-gray-400 text-sm font-medium rounded-lg cursor-not-allowed"
+        </div>
+
+        {/* Coluna 2: Metadados (Badges Pills) */}
+        <div className="flex flex-wrap items-center gap-2 justify-center md:justify-start">
+          {/* Localização */}
+          <div className="flex items-center gap-1.5 bg-slate-100 text-slate-600 px-3 py-1 rounded-full text-sm">
+            <MapPin className="w-3.5 h-3.5" />
+            <span>{provider.city}</span>
+          </div>
+          
+          {/* Contador de Favoritos */}
+          {provider.favorites_count !== undefined && provider.favorites_count > 0 && (
+            <span className="bg-green-50 text-green-700 px-3 py-1 rounded-full text-sm font-medium">
+              ❤️ {provider.favorites_count}
+            </span>
+          )}
+        </div>
+
+        {/* Coluna 3: Ações (Direita) */}
+        <div className="flex items-center gap-2">
+          {/* Botão Favorito */}
+          <FavoriteButton
+            providerId={provider.id}
+            initialIsFavorited={provider.is_favorited}
+            initialCount={provider.favorites_count || 0}
+          />
+          
+          {/* Botão Principal - Ver Perfil */}
+          <Link
+            to={`/profissionais/${provider.slug}`}
+            className="rounded-full px-6 py-2 bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition-colors text-sm whitespace-nowrap"
+          >
+            Ver Perfil
+          </Link>
+
+          {/* Botão WhatsApp (se disponível) */}
+          {hasWhatsApp && (
+            <a
+              href={`https://wa.me/${provider.whatsapp!.replace(/\D/g, '')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full p-2 bg-green-600 hover:bg-green-700 text-white transition-colors"
+              title="WhatsApp"
             >
-              Sem contato online
-            </button>
-            <button className="w-full px-3 py-2 border-2 border-dashed border-gray-300 text-gray-600 text-sm font-medium rounded-lg hover:border-primary-400 hover:text-primary-600 transition-colors">
-              <div className="flex items-center justify-center gap-2">
-                <User className="w-4 h-4" />
-                É você? Reivindique este perfil
-              </div>
-            </button>
-          </div>
-        )}
+              <Phone className="w-4 h-4" />
+            </a>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -178,31 +134,27 @@ export default function ProviderCard({ provider }: ProviderCardProps) {
 
 export function ProviderCardSkeleton() {
   return (
-    <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden animate-pulse">
-      <div className="p-6 pb-4">
-        <div className="flex items-start gap-4">
-          {/* Avatar Skeleton */}
-          <div className="w-16 h-16 rounded-full bg-gray-200" />
-          
-          {/* Content Skeleton */}
-          <div className="flex-1">
-            <div className="h-5 bg-gray-200 rounded w-3/4 mb-2" />
-            <div className="h-4 bg-gray-200 rounded w-1/2" />
+    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 animate-pulse">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+        {/* Avatar + Nome */}
+        <div className="flex items-center gap-4 flex-1 w-full md:w-auto">
+          <div className="rounded-lg w-16 h-16 bg-gray-200 flex-shrink-0" />
+          <div className="flex-1 min-w-0 space-y-2">
+            <div className="h-5 bg-gray-200 rounded w-40" />
+            <div className="h-4 bg-gray-200 rounded w-24" />
           </div>
         </div>
-      </div>
 
-      {/* Description Skeleton */}
-      <div className="px-6 pb-4">
-        <div className="h-4 bg-gray-200 rounded mb-2" />
-        <div className="h-4 bg-gray-200 rounded w-5/6" />
-      </div>
+        {/* Badges */}
+        <div className="flex gap-2">
+          <div className="h-6 bg-gray-200 rounded-full w-24" />
+          <div className="h-6 bg-gray-200 rounded-full w-16" />
+        </div>
 
-      {/* Buttons Skeleton */}
-      <div className="px-6 pb-6 pt-2">
-        <div className="grid grid-cols-2 gap-2">
-          <div className="h-10 bg-gray-200 rounded-lg" />
-          <div className="h-10 bg-gray-200 rounded-lg" />
+        {/* Ações */}
+        <div className="flex items-center gap-2">
+          <div className="h-8 w-8 bg-gray-200 rounded-full" />
+          <div className="h-8 w-28 bg-gray-200 rounded-full" />
         </div>
       </div>
     </div>

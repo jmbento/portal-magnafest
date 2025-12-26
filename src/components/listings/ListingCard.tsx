@@ -1,6 +1,6 @@
 /**
  * =====================================================================
- * CANAPEV - Card de Anúncio
+ * MAGNAFEST - Card de Anúncio
  * =====================================================================
  * Componente reutilizável para exibir um listing em formato card
  */

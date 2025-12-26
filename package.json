@@ -1,7 +1,7 @@
 {
-  "name": "canapev",
+  "name": "magnafest",
   "version": "1.0.0",
-  "description": "Marketplace Nacional de Eventos",
+  "description": "Portal de Profissionais para Eventos",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -14,9 +14,11 @@
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
     "@supabase/supabase-js": "^2.47.15",
+    "date-fns": "^4.1.0",
     "lucide-react": "^0.562.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
+    "react-helmet-async": "^2.0.5",
     "react-hook-form": "^7.69.0",
     "react-markdown": "^10.1.0",
     "react-router-dom": "^7.11.0",
@@ -24,13 +26,17 @@
     "zod": "^4.2.1"
   },
   "devDependencies": {
+    "@faker-js/faker": "^10.1.0",
+    "@types/node": "^25.0.3",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.2",
     "autoprefixer": "^10.4.23",
+    "dotenv": "^17.2.3",
     "postcss": "^8.5.6",
     "supabase": "^2.67.3",
     "tailwindcss": "^3.4.19",
+    "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
     "vite": "^6.0.5"
   },

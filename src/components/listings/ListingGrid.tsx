@@ -1,6 +1,6 @@
 /**
  * =====================================================================
- * CANAPEV - Grid de Anúncios
+ * MAGNAFEST - Grid de Anúncios
  * =====================================================================
  * Componente responsável por exibir a grid de resultados da busca
  */

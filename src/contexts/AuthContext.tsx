@@ -1,6 +1,6 @@
 /**
  * =====================================================================
- * CANAPEV - Context de Autenticação
+ * MAGNAFEST - Context de Autenticação
  * =====================================================================
  * Gerencia estado global do usuário autenticado
  */

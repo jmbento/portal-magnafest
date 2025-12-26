@@ -40,6 +40,10 @@ export interface Provider {
   // Descrição
   description: string | null;
   logo_url: string | null;
+  avatar_url?: string | null; // NOVO - foto de perfil
+  
+  // Portfólio (NOVO)
+  portfolio_images?: string[]; // Array de URLs de imagens
   
   // Metadados de Automação
   source_url: string | null;
@@ -49,6 +53,10 @@ export interface Provider {
   
   // Verificação
   is_verified: boolean;
+  
+  // Estatísticas Sociais (NOVO - vindos de query)
+  favorites_count?: number; // Contador de favoritos
+  is_favorited?: boolean; // Se o usuário atual favoritou
   
   // Timestamps
   created_at: string;
