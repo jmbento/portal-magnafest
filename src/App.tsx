@@ -44,6 +44,7 @@ import CreateListingPage from './pages/CreateListingPage';
 import TermsPage from './pages/Legal/TermsPage';
 import GuidesPage from './pages/Legal/GuidesPage';
 import NotFoundPage from './pages/NotFoundPage';
+import { EnvCheckWarning } from './components/EnvCheckWarning';
 
 // =====================================================================
 // LAYOUT COMPONENT (Wrapper com Navbar)
