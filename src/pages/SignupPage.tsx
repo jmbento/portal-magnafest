@@ -104,7 +104,7 @@ export default function SignupPage() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <img 
-            src="/assets/close-up-of-dj-mixing-console-in-party-light-2025-02-24-13-29-05-utc.jpg"
+            src="/assets/sound01bg.jpg"
             alt="DJ Console"
             className="w-full h-full object-cover"
             onError={(e) => {
