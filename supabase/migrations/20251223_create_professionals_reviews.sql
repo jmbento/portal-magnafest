@@ -222,14 +222,14 @@ SELECT USING (true);
 CREATE POLICY "Usuários autenticados podem criar perfil" ON professionals FOR
 INSERT
 WITH
-    CHECK (auth.uid () = user_id);
+    CHECK (auth.uid()::uuid = user_id);
 
 -- Atualização: Apenas o dono
 CREATE POLICY "Profissional pode atualizar próprio perfil" ON professionals FOR
-UPDATE USING (auth.uid () = user_id);
+    UPDATE USING (auth.uid()::uuid = user_id);
 
 -- Exclusão: Apenas o dono
-CREATE POLICY "Profissional pode deletar próprio perfil" ON professionals FOR DELETE USING (auth.uid () = user_id);
+CREATE POLICY "Profissional pode deletar próprio perfil" ON professionals FOR DELETE USING (auth.uid()::uuid = user_id);
 
 -- =====================
 -- REVIEWS POLICIES
@@ -241,7 +241,7 @@ SELECT USING (is_approved = true);
 
 -- Leitura: Autor vê suas próprias reviews (mesmo não aprovadas)
 CREATE POLICY "Autor pode visualizar próprias reviews" ON reviews FOR
-SELECT USING (auth.uid () = author_id);
+SELECT USING (auth.uid()::uuid = author_id);
 
 -- Inserção: Apenas usuários autenticados
 CREATE POLICY "Usuários autenticados podem criar review" ON reviews FOR
@@ -249,18 +249,18 @@ INSERT
 WITH
     CHECK (
         auth.uid () IS NOT NULL
-        AND auth.uid () = author_id
+        AND auth.uid()::uuid = author_id
     );
 
 -- Atualização: Apenas o autor (dentro de 24h)
 CREATE POLICY "Autor pode editar review em 24h" ON reviews FOR
 UPDATE USING (
-    auth.uid () = author_id
+    auth.uid()::uuid = author_id
     AND created_at > now() - interval '24 hours'
 );
 
 -- Exclusão: Apenas o autor
-CREATE POLICY "Autor pode deletar própria review" ON reviews FOR DELETE USING (auth.uid () = author_id);
+CREATE POLICY "Autor pode deletar própria review" ON reviews FOR DELETE USING (auth.uid()::uuid = author_id);
 
 -- =====================================================================
 -- FUNÇÕES UTILITÁRIAS

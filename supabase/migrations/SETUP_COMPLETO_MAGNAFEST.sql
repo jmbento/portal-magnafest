@@ -267,12 +267,12 @@ DROP POLICY IF EXISTS "Dono pode criar listings" ON public.listings;
 CREATE POLICY "Dono pode criar listings" ON public.listings FOR
 INSERT
 WITH
-    CHECK (auth.uid () = profiles_id);
+    CHECK (auth.uid()::uuid = profiles_id);
 
 DROP POLICY IF EXISTS "Dono pode editar listings" ON public.listings;
 
 CREATE POLICY "Dono pode editar listings" ON public.listings FOR
-UPDATE USING (auth.uid () = profiles_id);
+    UPDATE USING (auth.uid()::uuid = profiles_id);
 
 -- Moderation Log (apenas admins)
 DROP POLICY IF EXISTS "Apenas admins veem log" ON public.moderation_log;

@@ -49,10 +49,10 @@ SELECT USING (true);
 CREATE POLICY "Usuários podem adicionar favoritos" ON favorites FOR
 INSERT
 WITH
-    CHECK (auth.uid () = user_id);
+    CHECK (auth.uid()::uuid = user_id);
 
 -- DELETE: Apenas o próprio usuário pode desfavoritar
-CREATE POLICY "Usuários podem remover seus favoritos" ON favorites FOR DELETE USING (auth.uid () = user_id);
+CREATE POLICY "Usuários podem remover seus favoritos" ON favorites FOR DELETE USING (auth.uid()::uuid = user_id);
 
 -- =====================================================================
 -- ADICIONAR COLUNA: portfolio_images em providers

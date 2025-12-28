@@ -86,14 +86,14 @@ SELECT USING (author_id = auth.uid ());
 CREATE POLICY "Autores podem criar posts" ON posts FOR
 INSERT
 WITH
-    CHECK (auth.uid () = author_id);
+    CHECK (auth.uid()::uuid = author_id);
 
 -- Atualização: Apenas o autor
 CREATE POLICY "Autor pode atualizar próprio post" ON posts FOR
-UPDATE USING (auth.uid () = author_id);
+    UPDATE USING (auth.uid()::uuid = author_id);
 
 -- Exclusão: Apenas o autor
-CREATE POLICY "Autor pode deletar próprio post" ON posts FOR DELETE USING (auth.uid () = author_id);
+CREATE POLICY "Autor pode deletar próprio post" ON posts FOR DELETE USING (auth.uid()::uuid = author_id);
 
 COMMIT;
 

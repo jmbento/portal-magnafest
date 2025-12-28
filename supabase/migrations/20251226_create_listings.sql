@@ -121,7 +121,7 @@ SELECT USING (status = 'active');
 DROP POLICY IF EXISTS "Dono pode ver próprios listings" ON public.listings;
 
 CREATE POLICY "Dono pode ver próprios listings" ON public.listings FOR
-SELECT USING (auth.uid () = profiles_id);
+SELECT USING (auth.uid()::uuid = profiles_id);
 
 -- Policy: Usuários autenticados podem criar
 DROP POLICY IF EXISTS "Usuários podem criar listings" ON public.listings;
@@ -129,18 +129,18 @@ DROP POLICY IF EXISTS "Usuários podem criar listings" ON public.listings;
 CREATE POLICY "Usuários podem criar listings" ON public.listings FOR
 INSERT
 WITH
-    CHECK (auth.uid () = profiles_id);
+    CHECK (auth.uid()::uuid = profiles_id);
 
 -- Policy: Dono pode editar
 DROP POLICY IF EXISTS "Dono pode editar listings" ON public.listings;
 
 CREATE POLICY "Dono pode editar listings" ON public.listings FOR
-UPDATE USING (auth.uid () = profiles_id);
+UPDATE USING (auth.uid()::uuid = profiles_id);
 
 -- Policy: Dono pode deletar
 DROP POLICY IF EXISTS "Dono pode deletar listings" ON public.listings;
 
-CREATE POLICY "Dono pode deletar listings" ON public.listings FOR DELETE USING (auth.uid () = profiles_id);
+CREATE POLICY "Dono pode deletar listings" ON public.listings FOR DELETE USING (auth.uid()::uuid = profiles_id);
 
 -- Policy Mídia: Pública se listing ativo
 DROP POLICY IF EXISTS "Mídia pública" ON public.listings_media;

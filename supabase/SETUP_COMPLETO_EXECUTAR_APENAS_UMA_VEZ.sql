@@ -244,15 +244,15 @@ CREATE POLICY "events_public_published" ON events FOR
 SELECT USING (status = 'published');
 
 CREATE POLICY "events_owner_view" ON events FOR
-SELECT USING (auth.uid () = organizer_id);
+    SELECT USING (auth.uid()::uuid = organizer_id);
 
 CREATE POLICY "events_auth_insert" ON events FOR
 INSERT
 WITH
-    CHECK (auth.uid () = organizer_id);
+    CHECK (auth.uid()::uuid = organizer_id);
 
 CREATE POLICY "events_owner_update" ON events FOR
-UPDATE USING (auth.uid () = organizer_id);
+    UPDATE USING (auth.uid()::uuid = organizer_id);
 
 -- Registrations
 ALTER TABLE registrations ENABLE ROW LEVEL SECURITY;
@@ -264,14 +264,14 @@ DROP POLICY IF EXISTS "registrations_user_insert" ON registrations;
 DROP POLICY IF EXISTS "registrations_user_delete" ON registrations;
 
 CREATE POLICY "registrations_user_view" ON registrations FOR
-SELECT USING (auth.uid () = user_id);
+    SELECT USING (auth.uid()::uuid = user_id);
 
 CREATE POLICY "registrations_user_insert" ON registrations FOR
 INSERT
 WITH
-    CHECK (auth.uid () = user_id);
+    CHECK (auth.uid()::uuid = user_id);
 
-CREATE POLICY "registrations_user_delete" ON registrations FOR DELETE USING (auth.uid () = user_id);
+CREATE POLICY "registrations_user_delete" ON registrations FOR DELETE USING (auth.uid()::uuid = user_id);
 
 -- Compliance Docs (Público)
 ALTER TABLE compliance_docs ENABLE ROW LEVEL SECURITY;

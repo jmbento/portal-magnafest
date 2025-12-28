@@ -87,21 +87,21 @@ INSERT
 WITH
     CHECK (
         auth.uid () IS NOT NULL -- Usuário deve estar autenticado
-        AND auth.uid () = user_id -- E o user_id deve ser o próprio usuário
+        AND auth.uid()::uuid = user_id -- E o user_id deve ser o próprio usuário
     );
 
 COMMENT ON POLICY "Usuários autenticados podem criar eventos" ON events IS 'Permite que usuários autenticados criem eventos em seu próprio nome';
 
 -- Policy de ATUALIZAÇÃO: Apenas o dono do evento pode editá-lo
 CREATE POLICY "Usuários podem editar seus próprios eventos" ON events FOR
-UPDATE USING (auth.uid () = user_id)
+    UPDATE USING (auth.uid()::uuid = user_id)
 WITH
-    CHECK (auth.uid () = user_id);
+    CHECK (auth.uid()::uuid = user_id);
 
 COMMENT ON POLICY "Usuários podem editar seus próprios eventos" ON events IS 'Permite que usuários editem apenas eventos que eles criaram';
 
 -- Policy de EXCLUSÃO: Apenas o dono do evento pode deletá-lo
-CREATE POLICY "Usuários podem deletar seus próprios eventos" ON events FOR DELETE USING (auth.uid () = user_id);
+CREATE POLICY "Usuários podem deletar seus próprios eventos" ON events FOR DELETE USING (auth.uid()::uuid = user_id);
 
 COMMENT ON POLICY "Usuários podem deletar seus próprios eventos" ON events IS 'Permite que usuários deletem apenas eventos que eles criaram';
 

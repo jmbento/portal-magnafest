@@ -430,7 +430,7 @@ SELECT USING (
 CREATE POLICY "Usuários autenticados podem criar anúncios" ON listings FOR
 INSERT
 WITH
-    CHECK (auth.uid () = owner_id);
+    CHECK (auth.uid()::uuid = owner_id);
 
 -- Atualização: Apenas o dono ou admin
 CREATE POLICY "Apenas donos e admins podem editar anúncios" ON listings FOR

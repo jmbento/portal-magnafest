@@ -172,14 +172,14 @@ COMMENT ON POLICY "Admins ou usuários autenticados podem criar vendors" ON vend
 
 -- Policy: Apenas o dono pode ATUALIZAR seu vendor
 CREATE POLICY "Proprietários podem atualizar seus vendors" ON vendors FOR
-UPDATE USING (auth.uid () = owner_id)
+    UPDATE USING (auth.uid()::uuid = owner_id)
 WITH
-    CHECK (auth.uid () = owner_id);
+    CHECK (auth.uid()::uuid = owner_id);
 
 COMMENT ON POLICY "Proprietários podem atualizar seus vendors" ON vendors IS 'Apenas o dono pode editar seu perfil';
 
 -- Policy: Apenas o dono pode DELETAR seu vendor
-CREATE POLICY "Proprietários podem deletar seus vendors" ON vendors FOR DELETE USING (auth.uid () = owner_id);
+CREATE POLICY "Proprietários podem deletar seus vendors" ON vendors FOR DELETE USING (auth.uid()::uuid = owner_id);
 
 COMMENT ON POLICY "Proprietários podem deletar seus vendors" ON vendors IS 'Apenas o dono pode excluir seu perfil';
 
