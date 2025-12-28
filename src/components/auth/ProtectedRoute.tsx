@@ -5,9 +5,10 @@ import { useAuth } from '../../contexts/AuthContext';
 
 interface ProtectedRouteProps {
   children: ReactNode;
+  requireAdmin?: boolean;
 }
 
-export default function ProtectedRoute({ children }: ProtectedRouteProps) {
+export default function ProtectedRoute({ children, requireAdmin = false }: ProtectedRouteProps) {
   const { user, loading } = useAuth();
   const location = useLocation();
 
@@ -24,6 +25,16 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
 
   if (!user) {
     return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  // Verificação de admin (se requerido)
+  if (requireAdmin) {
+    const isAdmin = user.user_metadata?.role === 'admin';
+    
+    if (!isAdmin) {
+      console.error('🚫 Acesso negado: Usuário não é admin');
+      return <Navigate to="/" replace />;
+    }
   }
 
   return <>{children}</>;

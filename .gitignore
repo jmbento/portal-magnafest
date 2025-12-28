@@ -1,5 +1,6 @@
 # Arquivos de ambiente
 .env
+.env.credentials
 .env.local
 .env.production
 

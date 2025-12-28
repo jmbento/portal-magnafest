@@ -53,6 +53,7 @@ import { EnvCheckWarning } from './components/EnvCheckWarning';
 function Layout() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-secondary-50">
+      <EnvCheckWarning />
       <Navbar />
       <Outlet />
     </div>
@@ -146,12 +147,33 @@ function App() {
             }
           />
 
-          {/* Admin: Data Seeder */}
-          <Route path="admin/seed" element={<SeederPage />} />
+          {/* Admin: Data Seeder (Protegido) */}
+          <Route 
+            path="admin/seed" 
+            element={
+              <ProtectedRoute requireAdmin>
+                <SeederPage />
+              </ProtectedRoute>
+            } 
+          />
           
-          {/* Admin: Dashboard */}
-          <Route path="admin/dashboard" element={<AdminDashboard />} />
-          <Route path="admin/interviews" element={<InterviewApprovalPage />} />
+          {/* Admin: Dashboard (Protegido) */}
+          <Route 
+            path="admin/dashboard" 
+            element={
+              <ProtectedRoute requireAdmin>
+                <AdminDashboard />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="admin/interviews" 
+            element={
+              <ProtectedRoute requireAdmin>
+                <InterviewApprovalPage />
+              </ProtectedRoute>
+            } 
+          />
 
           {/* 404 - Not Found */}
           <Route path="*" element={<NotFoundPage />} />
