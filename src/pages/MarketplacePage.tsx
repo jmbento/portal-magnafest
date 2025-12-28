@@ -1,472 +1,259 @@
-/**
- * =====================================================================
- * CLASSIFICADOS PRO - Gear Exchange (Marketplace de Usados)
- * =====================================================================
- * "Venda o velho para comprar o novo" - Ciclo de vida do equipamento
- */
-
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { 
-  Package, 
-  Loader2, 
-  AlertCircle, 
-  Plus,
-  MapPin,
-  DollarSign,
-  ExternalLink,
-  Filter,
-  Recycle
-} from 'lucide-react';
-import PageHero from '../components/ui/PageHero';
+import { Search, Filter, PackageOpen, PlusCircle, Tag, MapPin } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-
-// =====================================================================
-// TYPES
-// =====================================================================
-
-type EquipmentCondition = 'novo' | 'seminovo' | 'usado' | 'pecas';
+import { useNavigate } from 'react-router-dom';
+import { SpotlightCard } from '../components/ui/SpotlightCard';
 
 interface Listing {
   id: string;
   title: string;
-  description: string | null;
+  description: string;
   price_min: number;
-  price_unit: string;
-  listing_type: 'venue' | 'service' | 'product_rent' | 'product_sale';
-  status: string;
+  price_max: number | null;
+  condition: string;
+  listing_type: string;
   created_at: string;
-  condition?: EquipmentCondition; // Nova propriedade
-  categories?: {
-    name: string;
-  };
-  media?: Array<{
-    url: string;
-    sort_order: number;
-  }>;
-  location_data?: {
-    cidade?: string;
-    estado?: string;
-  };
 }
 
-// =====================================================================
-// COMPONENT
-// =====================================================================
+const CONDITION_LABELS: Record<string, { label: string; color: string }> = {
+  novo: { label: '✨ Novo na Caixa', color: 'bg-green-500/20 text-green-400 border-green-500/30' },
+  seminovo: { label: '⭐ Seminovo', color: 'bg-blue-500/20 text-blue-400 border-blue-500/30' },
+  usado: { label: '🔧 Usado', color: 'bg-orange-500/20 text-orange-400 border-orange-500/30' },
+  pecas: { label: '⚙️ Peças', color: 'bg-red-500/20 text-red-400 border-red-500/30' }
+};
 
 export default function MarketplacePage() {
   const navigate = useNavigate();
-  
   const [listings, setListings] = useState<Listing[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  
-  // Filtros
-  const [selectedConditions, setSelectedConditions] = useState<EquipmentCondition[]>([]);
-  const [selectedType, setSelectedType] = useState<string>('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedConditions, setSelectedConditions] = useState<string[]>([]);
 
   useEffect(() => {
     fetchListings();
-  }, [selectedConditions, selectedType]);
+  }, [searchTerm, selectedConditions]);
 
-  // ================================================================
-  // DATA FETCHING
-  // ================================================================
-
-  const fetchListings = async () => {
+  async function fetchListings() {
     try {
       setLoading(true);
-      setError(null);
-
+      
       let query = supabase
         .from('listings')
-        .select(`
-          id,
-          title,
-          description,
-          price_min,
-          price_unit,
-          listing_type,
-          status,
-          created_at,
-          location_data,
-          categories (
-            name
-          ),
-          media (
-            url,
-            sort_order
-          )
-        `)
+        .select('*')
         .eq('status', 'active')
+        .eq('moderation_status', 'approved')
         .order('created_at', { ascending: false });
 
-      // Filtro por tipo
-      if (selectedType) {
-        query = query.eq('listing_type', selectedType);
+      if (searchTerm) {
+        query = query.ilike('title', `%${searchTerm}%`);
       }
 
-      const { data, error: fetchError } = await query.limit(50);
-
-      if (fetchError) throw fetchError;
-
-      // Simular condição aleatória (em produção virá do banco)
-      const listingsWithCondition = (data || []).map(listing => ({
-        ...listing,
-        condition: getRandomCondition()
-      }));
-
-      // Filtrar por condição (client-side por enquanto)
-      let filtered = listingsWithCondition;
       if (selectedConditions.length > 0) {
-        filtered = listingsWithCondition.filter(l => 
-          l.condition && selectedConditions.includes(l.condition)
-        );
+        query = query.in('condition', selectedConditions);
       }
 
-      setListings(filtered);
-    } catch (err: any) {
-      console.error('Erro ao buscar anúncios:', err);
-      setError('Erro ao carregar anúncios. Tente novamente.');
+      const { data, error } = await query;
+
+      if (error) throw error;
+      setListings(data || []);
+    } catch (error) {
+      console.error('Erro ao buscar anúncios:', error);
+      setListings([]);
     } finally {
       setLoading(false);
     }
-  };
+  }
 
-  // ================================================================
-  // HANDLERS
-  // ================================================================
-
-  const toggleCondition = (condition: EquipmentCondition) => {
+  function toggleCondition(condition: string) {
     setSelectedConditions(prev =>
       prev.includes(condition)
         ? prev.filter(c => c !== condition)
         : [...prev, condition]
     );
-  };
+  }
 
-  const clearFilters = () => {
-    setSelectedConditions([]);
-    setSelectedType('');
-  };
-
-  // ================================================================
-  // HELPERS
-  // ================================================================
-
-  const getRandomCondition = (): EquipmentCondition => {
-    const conditions: EquipmentCondition[] = ['novo', 'seminovo', 'usado', 'pecas'];
-    return conditions[Math.floor(Math.random() * conditions.length)];
-  };
-
-  // ================================================================
-  // RENDER
-  // ================================================================
-
-  const activeFiltersCount = selectedConditions.length + (selectedType ? 1 : 0);
+  function formatPrice(min: number, max: number | null) {
+    const formatter = new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+      minimumFractionDigits: 0
+    });
+    
+    if (max && max !== min) {
+      return `${formatter.format(min)} - ${formatter.format(max)}`;
+    }
+    return formatter.format(min);
+  }
 
   return (
-    <main className="min-h-screen bg-magna-black text-white">
-      {/* Hero Section - NOVA NARRATIVA */}
-      <PageHero 
-        title="CLASSIFICADOS PRO"
-        subtitle="Venda o que parou de usar. Compre o que falta para crescer. O mercado de usados oficial do setor."
-        imageUrl="/assets/hero-market.jpg"
-        imageKeyword="flight-cases,audio-equipment,stage-gear"
-      />
-
-      {/* Container Principal */}
-      <div className="container mx-auto px-4 py-12">
+    <div className="min-h-screen bg-[#050505] font-sans text-white pb-20">
+      
+      {/* 1. HERO SECTION */}
+      <div className="relative h-[350px] w-full overflow-hidden border-b border-white/10 group">
+        <div className="absolute inset-0 bg-gray-900">
+           <img 
+             src="/assets/hero-market.jpg" 
+             alt="Classificados Background" 
+             className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700"
+             onError={(e) => {
+               e.currentTarget.style.display = 'none'; 
+             }}
+           />
+        </div>
         
-        {/* Layout: Sidebar + Grid */}
-        <div className="flex flex-col lg:flex-row gap-8">
+        <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent" />
+
+        <div className="relative z-10 container mx-auto px-4 h-full flex flex-col justify-end pb-10">
+          <div className="max-w-4xl">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="px-3 py-1 text-xs font-bold tracking-widest text-black bg-[#00f0ff] rounded-full uppercase shadow-[0_0_10px_rgba(0,240,255,0.5)]">
+                Marketplace Oficial
+              </span>
+              <span className="text-gray-400 text-sm flex items-center gap-1">
+                <Tag className="w-3 h-3" /> Compra & Venda Verificada
+              </span>
+            </div>
+              <h1 className="text-3xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-white mb-3 leading-tight break-words">
+                Marketplace Oficial <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500">PRO</span>
+              </h1>
+              <p className="text-sm md:text-base text-gray-400 max-w-xl leading-relaxed">
+              O ecossistema circular do evento. Venda seu equipamento antigo para financiar o próximo upgrade.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* 2. BARRA DE BUSCA */}
+      <div className="sticky top-0 z-30 bg-[#050505]/80 backdrop-blur-md border-b border-white/5 shadow-2xl">
+        <div className="container mx-auto px-4 py-4 flex flex-col md:flex-row gap-4 items-center justify-between">
           
-          {/* ================================================
-              SIDEBAR - FILTROS
-              ================================================ */}
-          <aside className="lg:w-80 flex-shrink-0">
-            <div className="bg-magna-dark rounded-xl p-6 border border-white/10 sticky top-4">
-              
-              {/* Header */}
-              <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
-                <div className="flex items-center gap-2">
-                  <Filter className="w-5 h-5 text-magna-cyan" />
-                  <h3 className="font-bold text-lg">Filtros</h3>
-                </div>
-                {activeFiltersCount > 0 && (
-                  <button
-                    onClick={clearFilters}
-                    className="text-xs text-magna-magenta hover:text-magna-cyan transition-colors font-semibold"
-                  >
-                    Limpar ({activeFiltersCount})
-                  </button>
-                )}
-              </div>
-
-              {/* Condição do Equipamento */}
-              <div className="mb-6">
-                <label className="block text-sm font-semibold text-gray-300 mb-3">
-                  Condição do Equipamento
-                </label>
-                <div className="space-y-2">
-                  {[
-                    { value: 'novo' as EquipmentCondition, label: 'Novo na Caixa', icon: '📦' },
-                    { value: 'seminovo' as EquipmentCondition, label: 'Seminovo', icon: '✨' },
-                    { value: 'usado' as EquipmentCondition, label: 'Usado (Guerreiro)', icon: '🔧' },
-                    { value: 'pecas' as EquipmentCondition, label: 'Defeito/Peças', icon: '⚙️' }
-                  ].map((condition) => (
-                    <label
-                      key={condition.value}
-                      className="flex items-center gap-3 cursor-pointer group p-2 rounded-lg hover:bg-white/5 transition-colors"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={selectedConditions.includes(condition.value)}
-                        onChange={() => toggleCondition(condition.value)}
-                        className="w-4 h-4 text-magna-violet border-white/20 bg-magna-black rounded focus:ring-magna-violet"
-                      />
-                      <span className="text-xl">{condition.icon}</span>
-                      <span className="text-sm text-gray-300 group-hover:text-white transition-colors flex-1">
-                        {condition.label}
-                      </span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Tipo de Negócio */}
-              <div>
-                <label className="block text-sm font-semibold text-gray-300 mb-3">
-                  Tipo de Negócio
-                </label>
-                <select
-                  value={selectedType}
-                  onChange={(e) => setSelectedType(e.target.value)}
-                  className="w-full px-4 py-2 bg-magna-black border border-white/20 text-white rounded-lg focus:ring-2 focus:ring-magna-violet focus:border-transparent transition-all outline-none"
-                >
-                  <option value="">Todos</option>
-                  <option value="product_sale">💰 Venda</option>
-                  <option value="product_rent">📦 Aluguel</option>
-                  <option value="service">🔧 Serviço</option>
-                </select>
-              </div>
-
-              {/* Info Box */}
-              <div className="mt-6 p-4 bg-green-500/10 border border-green-500/20 rounded-lg">
-                <div className="flex items-start gap-3">
-                  <Recycle className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <p className="text-xs font-semibold text-green-400 mb-1">
-                      Ciclo Sustentável
-                    </p>
-                    <p className="text-xs text-gray-400">
-                      Dê nova vida aos equipamentos. Cada venda gera oportunidade!
-                    </p>
-                  </div>
-                </div>
-              </div>
+          <div className="relative w-full md:w-1/2 group">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Search className="h-5 w-5 text-gray-500 group-focus-within:text-[#00f0ff] transition-colors" />
             </div>
-          </aside>
-
-          {/* ================================================
-              MAIN CONTENT - GRID
-              ================================================ */}
-          <div className="flex-1">
-            
-            {/* Header com CTA */}
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8">
-              <div>
-                <h2 className="text-3xl font-black mb-2">Equipamentos Disponíveis</h2>
-                <p className="text-gray-400">
-                  {listings.length} {listings.length === 1 ? 'anúncio encontrado' : 'anúncios encontrados'}
-                </p>
-              </div>
-              
-              <button
-                onClick={() => {
-                  // Verificar se está logado antes de criar anúncio
-                  const isLoggedIn = localStorage.getItem('supabase.auth.token');
-                  if (!isLoggedIn) {
-                    if (confirm('Você precisa fazer login para criar um anúncio. Ir para login?')) {
-                      navigate('/login');
-                    }
-                  } else {
-                    navigate('/create');
-                  }
-                }}
-                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-bold rounded-xl transition-all shadow-lg"
-              >
-                <Plus className="w-5 h-5" />
-                Desapegar & Vender Agora
-              </button>
-            </div>
-
-            {/* Loading State */}
-            {loading && (
-              <div className="flex flex-col items-center justify-center py-20">
-                <Loader2 className="w-12 h-12 text-magna-violet animate-spin mb-4" />
-                <p className="text-gray-400">Carregando classificados...</p>
-              </div>
-            )}
-
-            {/* Error State */}
-            {error && !loading && (
-              <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-8 flex flex-col items-center justify-center">
-                <AlertCircle className="w-16 h-16 text-red-500 mb-4" />
-                <h3 className="text-xl font-bold text-red-400 mb-2">Erro ao Carregar</h3>
-                <p className="text-gray-400 mb-4">{error}</p>
-                <button
-                  onClick={fetchListings}
-                  className="px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition-colors"
-                >
-                  Tentar Novamente
-                </button>
-              </div>
-            )}
-
-            {/* Empty State */}
-            {!loading && !error && listings.length === 0 && (
-              <div className="bg-magna-dark border border-white/10 rounded-xl p-12 flex flex-col items-center justify-center text-center">
-                <Package className="w-24 h-24 text-gray-600 mb-6" />
-                <h3 className="text-2xl font-bold mb-2">Nenhum Equipamento Ainda</h3>
-                <p className="text-gray-400 mb-6 max-w-md">
-                  Seja o primeiro a desapegar! Venda aquele gear que está parado e financie o próximo upgrade.
-                </p>
-                <button
-                  onClick={() => navigate('/create')}
-                  className="flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-bold rounded-xl transition-all shadow-lg"
-                >
-                  <Plus className="w-6 h-6" />
-                  Desapegar & Vender Agora
-                </button>
-              </div>
-            )}
-
-            {/* Grid de Anúncios */}
-            {!loading && !error && listings.length > 0 && (
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                {listings.map((listing) => (
-                  <ListingCard key={listing.id} listing={listing} />
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    </main>
-  );
-}
-
-// =====================================================================
-// SUB-COMPONENT: ListingCard com Badge de Condição
-// =====================================================================
-
-interface ListingCardProps {
-  listing: Listing;
-}
-
-function ListingCard({ listing }: ListingCardProps) {
-  const navigate = useNavigate();
-  
-  // Primeira imagem ou placeholder
-  const imageUrl = listing.media?.[0]?.url || 'https://source.unsplash.com/800x600/?audio-equipment,stage-gear';
-  
-  // Localização
-  const location = listing.location_data?.cidade && listing.location_data?.estado
-    ? `${listing.location_data.cidade}, ${listing.location_data.estado}`
-    : 'Localização não informada';
-
-  // Badge de Condição
-  const getConditionBadge = (condition?: EquipmentCondition) => {
-    if (!condition) return null;
-
-    const badges = {
-      'novo': { label: 'Novo na Caixa', class: 'bg-blue-500/20 text-blue-400 border-blue-500/30' },
-      'seminovo': { label: 'Seminovo', class: 'bg-green-500/20 text-green-400 border-green-500/30' },
-      'usado': { label: 'Usado (Guerreiro)', class: 'bg-orange-500/20 text-orange-400 border-orange-500/30' },
-      'pecas': { label: 'Para Peças', class: 'bg-red-500/20 text-red-400 border-red-500/30' }
-    };
-
-    const badge = badges[condition];
-
-    return (
-      <div className={`absolute top-3 right-3 px-3 py-1 ${badge.class} backdrop-blur-sm border font-bold text-xs rounded-full shadow-lg`}>
-        {badge.label}
-      </div>
-    );
-  };
-
-  return (
-    <div className="bg-magna-dark border border-white/10 rounded-xl overflow-hidden hover:border-magna-cyan/50 hover:shadow-[0_0_30px_rgba(138,43,226,0.3)] transition-all duration-300 group">
-      {/* Imagem */}
-      <div className="relative h-48 overflow-hidden bg-gradient-to-br from-magna-violet/20 to-magna-cyan/20">
-        <img
-          src={imageUrl}
-          alt={listing.title}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-          loading="lazy"
-        />
-        
-        {/* Badge de Condição (Nova Feature!) */}
-        {getConditionBadge(listing.condition)}
-
-        {/* Preço */}
-        <div className="absolute bottom-3 left-3 px-4 py-2 bg-black/70 backdrop-blur-sm text-white font-bold rounded-lg flex items-center gap-1">
-          <DollarSign className="w-4 h-4" />
-          {formatPrice(listing.price_min, listing.price_unit)}
-        </div>
-      </div>
-
-      {/* Conteúdo */}
-      <div className="p-5">
-        {/* Categoria */}
-        {listing.categories && (
-          <span className="inline-block px-2 py-1 bg-magna-violet/20 text-magna-cyan text-xs font-semibold rounded mb-3">
-            {listing.categories.name}
-          </span>
-        )}
-
-        {/* Título */}
-        <h3 className="text-lg font-bold text-white mb-2 line-clamp-2 group-hover:text-magna-cyan transition-colors">
-          {listing.title}
-        </h3>
-
-        {/* Descrição */}
-        {listing.description && (
-          <p className="text-sm text-gray-400 mb-4 line-clamp-2">
-            {listing.description}
-          </p>
-        )}
-
-        {/* Footer */}
-        <div className="flex items-center justify-between pt-4 border-t border-white/10">
-          <div className="flex items-center gap-1 text-xs text-gray-500">
-            <MapPin className="w-4 h-4" />
-            <span className="line-clamp-1">{location}</span>
+            <input
+              type="text"
+              className="block w-full pl-10 pr-3 py-2.5 border border-white/10 rounded-lg leading-5 bg-white/5 text-gray-300 placeholder-gray-500 focus:outline-none focus:bg-black focus:border-[#8A2BE2] focus:ring-1 focus:ring-[#8A2BE2] sm:text-sm transition-all"
+              placeholder="Busque por 'Console Yamaha', 'Shure SM58', 'Case'..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
           </div>
 
-          <button
-            onClick={() => navigate(`/listing/${listing.id}`)}
-            className="flex items-center gap-1 text-sm text-magna-cyan hover:text-magna-magenta font-semibold transition-colors"
+          <button 
+            onClick={() => navigate('/criar-anuncio')}
+            className="w-full md:w-auto flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold py-2.5 px-6 rounded-lg transition-all shadow-[0_0_15px_rgba(138,43,226,0.3)] hover:shadow-[0_0_25px_rgba(138,43,226,0.5)] transform hover:-translate-y-0.5"
           >
-            Ver mais
-            <ExternalLink className="w-4 h-4" />
+            <PlusCircle className="w-5 h-5" />
+            <span>Anunciar Equipamento</span>
           </button>
         </div>
       </div>
+
+      {/* 3. CONTEÚDO PRINCIPAL */}
+      <div className="container mx-auto px-4 py-8 flex flex-col lg:flex-row gap-8">
+        
+        {/* SIDEBAR FILTROS (Hidden no Mobile) */}
+        <aside className="hidden lg:block w-64 flex-shrink-0 space-y-8">
+          <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+            <div className="flex items-center gap-2 mb-6 text-white font-bold">
+              <Filter className="w-5 h-5 text-[#00f0ff]" /> Filtros
+            </div>
+            
+            <div className="space-y-4">
+              <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">Estado de Uso</h3>
+              {Object.entries(CONDITION_LABELS).map(([key, { label }]) => (
+                <label key={key} className="flex items-center space-x-3 cursor-pointer group">
+                  <input 
+                    type="checkbox" 
+                    checked={selectedConditions.includes(key)}
+                    onChange={() => toggleCondition(key)}
+                    className="form-checkbox h-4 w-4 text-purple-600 rounded border-gray-600 bg-gray-800 focus:ring-purple-500 focus:ring-offset-gray-900" 
+                  />
+                  <span className="text-gray-400 group-hover:text-white transition-colors text-sm">{label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        </aside>
+
+        {/* GRID DE RESULTADOS */}
+        <main className="flex-1">
+          {loading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[1, 2, 3, 4, 5, 6].map((i) => (
+                <div key={i} className="bg-[#111] rounded-xl border border-white/5 h-80 animate-pulse" />
+              ))}
+            </div>
+          ) : listings.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {listings.map((ad) => (
+                <div 
+                  key={ad.id}
+                  className="perspective-[1000px]"
+                >
+                  <SpotlightCard className="group">
+                    <div
+                      onClick={() => navigate(`/anuncio/${ad.id}`)}
+                      className="bg-[#111] rounded-xl overflow-hidden border border-transparent transition-all duration-500 ease-out transform-gpu md:group-hover:rotate-x-2 md:group-hover:rotate-y-2 md:group-hover:scale-[1.02] group-hover:shadow-[0_20px_40px_-15px_rgba(139,92,246,0.3)] flex flex-col cursor-pointer"
+                      style={{ transformStyle: 'preserve-3d' }}
+                    >
+                  <div className="relative h-48 bg-gradient-to-br from-purple-900/20 to-pink-900/20 flex items-center justify-center overflow-hidden">
+                    <div className="absolute top-2 left-2 z-10">
+                      <span className={`px-2 py-1 text-xs font-bold rounded border ${CONDITION_LABELS[ad.condition]?.color || 'bg-gray-500/20 text-gray-400'}`}>
+                        {CONDITION_LABELS[ad.condition]?.label || ad.condition}
+                      </span>
+                    </div>
+                    <Tag className="w-16 h-16 text-white/10" />
+                  </div>
+                  
+                  <div className="p-4 flex-1 flex flex-col">
+                    <h3 className="text-lg font-bold text-white mb-1 group-hover:text-purple-400 transition-colors line-clamp-2">
+                      {ad.title}
+                    </h3>
+                    
+                    <div className="mt-auto pt-3 border-t border-white/5 flex items-center justify-between">
+                      <span className="text-xl font-bold text-[#00f0ff]">
+                        {formatPrice(ad.price_min, ad.price_max)}
+                      </span>
+                      <button className="text-xs text-white bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded transition-colors">
+                        Ver Detalhes
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                  </SpotlightCard>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="h-[400px] flex flex-col items-center justify-center text-center p-8 border-2 border-dashed border-white/10 rounded-2xl bg-white/[0.02]">
+              <div className="w-20 h-20 bg-black rounded-full flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(0,0,0,0.5)] border border-white/10">
+                <PackageOpen className="w-10 h-10 text-gray-600" />
+              </div>
+              <h3 className="text-xl md:text-2xl font-semibold text-white mb-2 tracking-tight break-words">
+                {searchTerm 
+                  ? `Nenhum resultado para "${searchTerm}"`
+                  : 'O Mercado está Vazio'
+                }
+              </h3>
+              <p className="text-gray-400 max-w-md mx-auto mb-8">
+                {searchTerm
+                  ? 'Tente buscar por outros termos ou ajustar os filtros.'
+                  : 'Nenhum equipamento encontrado. Seja o primeiro a anunciar e alcance milhares de profissionais.'
+                }
+              </p>
+              <button 
+                onClick={() => navigate('/criar-anuncio')}
+                className="bg-white text-black hover:bg-gray-200 font-bold px-6 py-3 rounded-lg transition-colors"
+              >
+                Criar Primeiro Anúncio
+              </button>
+            </div>
+          )}
+        </main>
+
+      </div>
     </div>
   );
-}
-
-// =====================================================================
-// HELPER FUNCTIONS
-// =====================================================================
-
-function formatPrice(price: number, unit: string): string {
-  const formatted = new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL'
-  }).format(price);
-
-  return `${formatted}${unit === 'day' ? '/dia' : unit === 'hour' ? '/hora' : ''}`;
 }

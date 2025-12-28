@@ -38,7 +38,11 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import InterviewApprovalPage from './pages/admin/InterviewApprovalPage';
 import AdvertisePage from './pages/AdvertisePage';
 import MarketplacePage from './pages/MarketplacePage';
+import ListingDetailPage from './pages/ListingDetailPage';
+import SignupPage from './pages/SignupPage';
+import CreateListingPage from './pages/CreateListingPage';
 import TermsPage from './pages/Legal/TermsPage';
+import GuidesPage from './pages/Legal/GuidesPage';
 
 // =====================================================================
 // LAYOUT COMPONENT (Wrapper com Navbar)
@@ -86,11 +90,15 @@ function App() {
 
           {/* Autenticação */}
           <Route path="login" element={<LoginPage />} />
+          <Route path="cadastro" element={<SignupPage />} />
+          <Route path="signup" element={<SignupPage />} />
 
           {/* Busca */}
           <Route path="search" element={<SearchPage />} />
           <Route path="explorar" element={<ExplorePage />} />
           <Route path="marketplace" element={<MarketplacePage />} />
+          <Route path="anuncio/:id" element={<ListingDetailPage />} />
+          <Route path="criar-anuncio" element={<CreateListingPage />} />
 
           {/* Eventos */}
           <Route path="eventos">
@@ -117,6 +125,7 @@ function App() {
           {/* Guias/Compliance */}
           <Route path="guia" element={<DirectoryExamplePage />} />
           <Route path="guia-legal" element={<CompliancePage />} />
+          <Route path="guias" element={<GuidesPage />} />
           <Route path="termos" element={<TermsPage />} />
           <Route path="terms" element={<TermsPage />} /> {/* Alias em inglês */}
 
@@ -128,6 +137,7 @@ function App() {
 
           {/* Publicidade/Anuncie */}
           <Route path="anuncie" element={<AdvertisePage />} />
+          <Route path="anunciar" element={<AdvertisePage />} />
 
           {/* Dashboard (Protegido) */}
           <Route

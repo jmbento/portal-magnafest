@@ -10,14 +10,14 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { 
   Menu, 
   X, 
-  Search, 
   PlusCircle, 
   User, 
   LogOut,
   Calendar,
   Users,
   Shield,
-  Newspaper
+  Newspaper,
+  Megaphone
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -26,6 +26,7 @@ import { useAuth } from '../../contexts/AuthContext';
 // =====================================================================
 
 const NAV_LINKS = [
+  { label: 'Classificados', href: '/marketplace', icon: PlusCircle },
   { label: 'Eventos', href: '/eventos', icon: Calendar },
   { label: 'Agenda', href: '/agenda', icon: Calendar },
   { label: 'Profissionais', href: '/profissionais', icon: Users },
@@ -92,19 +93,6 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-1">
-            {/* Search */}
-            <Link
-              to="/search"
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors font-medium ${
-                isActive('/search')
-                  ? 'text-magna-cyan bg-magna-cyan/10'
-                  : 'text-gray-300 hover:text-magna-cyan hover:bg-white/5'
-              }`}
-            >
-              <Search className="w-4 h-4" />
-              Explorar
-            </Link>
-
             {/* Dynamic Links */}
             {NAV_LINKS.map((link) => {
               const Icon = link.icon;
@@ -127,15 +115,24 @@ export default function Navbar() {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-4">
+            {/* CTA Anuncie Aqui (SEMPRE VISÍVEL) */}
+            <Link
+              to="/anunciar"
+              className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-500 to-orange-500 text-black font-bold rounded-lg hover:opacity-90 transition-opacity shadow-lg"
+            >
+              <Megaphone className="w-4 h-4" strokeWidth={1.25} />
+              Anuncie Aqui
+            </Link>
+
             {user ? (
               <>
-                {/* Botão Anunciar */}
+                {/* Botão Criar Anúncio (Classificados) */}
                 <Link
-                  to="/create"
+                  to="/criar-anuncio"
                   className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-magna-violet to-magna-magenta text-white font-bold rounded-lg hover:opacity-90 transition-opacity"
                 >
                   <PlusCircle className="w-4 h-4" />
-                  Anunciar
+                  Vender Equipamento
                 </Link>
 
                 {/* User Menu */}
@@ -212,19 +209,6 @@ export default function Navbar() {
       {isMobileMenuOpen && (
         <div className="md:hidden border-t border-white/10 bg-magna-dark">
           <div className="px-4 py-4 space-y-2">
-            {/* Search */}
-            <Link
-              to="/search"
-              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
-                isActive('/search')
-                  ? 'bg-magna-cyan/10 text-magna-cyan font-semibold'
-                  : 'text-gray-300 hover:bg-white/5 hover:text-white'
-              }`}
-              onClick={closeMobileMenu}
-            >
-              <Search className="w-5 h-5" />
-              <span className="font-medium">Explorar</span>
-            </Link>
 
             {/* Dynamic Links */}
             {NAV_LINKS.map((link) => {

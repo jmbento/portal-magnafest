@@ -1,395 +1,223 @@
-/**
- * =====================================================================
- * AdvertisePage - Sua Marca no Centro do Palco
- * =====================================================================
- * Página de alta conversão para atrair anunciantes e parceiros
- * 
- * INSTRUÇÕES DE SETUP:
- * 1. Baixe uma imagem premium do Envato Elements ou Unsplash
- *    Busque por: "Concert Stage Technology" ou "Business Handshake Dark"
- * 2. Salve a imagem em: /public/assets/hero-advertise.jpg
- * 3. Dimensões recomendadas: 1920x1080px
- * 
- * Alternativamente, use Unsplash Source (temporário):
- * https://source.unsplash.com/1920x1080/?concert-stage,business-meeting
- */
-
 import { useState } from 'react';
-import { 
-  Megaphone, 
-  TrendingUp, 
-  Users, 
-  Zap,
-  FileText,
-  Mail,
-  Download,
-  CheckCircle,
-  Target,
-  Eye,
-  BarChart3,
-  Sparkles
-} from 'lucide-react';
-import PageHero from '../components/ui/PageHero';
-import { siteConfig } from '../config/siteConfig';
+import { Check, Mail, Download } from 'lucide-react';
 
-// =====================================================================
-// COMPONENT
-// =====================================================================
+// --- CONFIGURAÇÃO DOS FORMATOS E ONDE ELES APARECEM ---
+const FORMATS = [
+  {
+    id: 'billboard',
+    label: 'Billboard Homepage',
+    desc: 'O espaço nobre. Banner full-width no topo inicial.',
+    highlightArea: 'header' 
+  },
+  {
+    id: 'native',
+    label: 'Native Ads (Feed)',
+    desc: 'Artigos patrocinados integrados ao feed de notícias.',
+    highlightArea: 'feed'
+  },
+  {
+    id: 'sidebar',
+    label: 'Destaque Lateral/Busca',
+    desc: 'Cards em áreas estratégicas de navegação e busca.',
+    highlightArea: 'sidebar'
+  }
+];
 
 export default function AdvertisePage() {
-  const [showThankYou, setShowThankYou] = useState(false);
+  const [activeFormat, setActiveFormat] = useState(FORMATS[0]);
 
-  // ================================================================
-  // HANDLERS
-  // ================================================================
+  const isHighlighted = (area: string) => activeFormat.highlightArea === area;
 
-  const handleContactCommercial = () => {
-    const subject = 'Solicitar Mídia Kit Completo - Portal MagnaFest';
-    const body = `Olá equipe Comercial MagnaFest!
-
-Gostaria de receber o Mídia Kit completo e informações sobre oportunidades de anúncio no Portal MagnaFest.
-
-Nome da Empresa: 
-Segmento: 
-Nome do Responsável: 
-Telefone: 
-Melhor horário para contato: 
-
-Áreas de interesse:
-[ ] Banner Homepage
-[ ] Publipost / Review de Produto
-[ ] E-mail Marketing
-[ ] Branded Content
-[ ] Patrocínio de Eventos
-[ ] Outro: _______________
-
-Aguardo retorno.
-
-Atenciosamente.`;
-
-    window.location.href = `mailto:${siteConfig.emails.comercial}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  };
-
-  const handleDownloadMediaKit = () => {
-    // TODO: Implementar download real do PDF
-    setShowThankYou(true);
-    setTimeout(() => setShowThankYou(false), 3000);
-    alert('📄 Download do Mídia Kit em desenvolvimento.\n\nPor enquanto, entre em contato com nossa equipe comercial!');
-  };
-
-  // ================================================================
-  // RENDER
-  // ================================================================
+  const highlightClass = "bg-gradient-to-r from-purple-500/80 to-pink-500/80 border-purple-400/50 shadow-[0_0_15px_rgba(168,85,247,0.2)] text-white flex items-center justify-center font-bold text-[10px] tracking-widest uppercase animate-pulse transition-all duration-500";
+  const normalClass = "bg-white/5 border-white/10";
 
   return (
-    <main className="min-h-screen bg-magna-black text-white">
-      {/* Hero Premium */}
-      <PageHero 
-        title="Sua Marca no Centro do Palco"
-        subtitle="Conecte-se com a maior comunidade de produtores e técnicos de eventos do Brasil"
-        imageKeyword="concert-stage,business-meeting,technology"
-      />
+    <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-purple-500/30 pt-20 overflow-hidden">
+      
+      {/* HERO SECTION */}
+      <div className="container mx-auto px-6 py-20 text-center max-w-4xl relative z-10">
+        <span className="inline-block px-3 py-1 mb-6 text-[11px] font-bold tracking-[0.2em] text-purple-400 border border-purple-500/20 rounded-full uppercase">
+          Magna Media Kit
+        </span>
+        <h1 className="text-3xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-white mb-6 leading-tight break-words">
+          Sua marca no <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">Backstage</span> mais exclusivo.
+        </h1>
+        <p className="text-base md:text-lg text-gray-400 leading-relaxed max-w-2xl mx-auto">
+          Alcance a elite técnica e produtiva de eventos no Brasil. B2B real, sem desperdício de verba.
+        </p>
+      </div>
 
-      {/* Why Us - Números Impactantes */}
-      <section className="py-16 bg-magna-dark border-y border-white/10">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-black uppercase mb-4">
-              Por Que Anunciar no MagnaFest?
-            </h2>
-            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-              Mais que visualizações: acesse uma audiência qualificada que realmente importa para seu negócio
-            </p>
-          </div>
+      {/* VITRINE INTERATIVA (DUAL DEVICE MOCKUP) */}
+      <div className="bg-[#0A0A0A] border-y border-white/5 py-24 relative overflow-hidden">
+        {/* Background Glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-purple-900/20 blur-[120px] rounded-full pointer-events-none -z-10" />
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            <ImpactCard
-              icon={<Users className="w-16 h-16" />}
-              number="5.000+"
-              label="Profissionais Ativos"
-              description="Técnicos, produtores e fornecedores cadastrados"
-              color="from-magna-cyan to-blue-500"
-            />
-            
-            <ImpactCard
-              icon={<Target className="w-16 h-16" />}
-              number="120+"
-              label="Eventos Cadastrados/Mês"
-              description="Demanda constante por equipamentos e serviços"
-              color="from-magna-violet to-purple-500"
-            />
-            
-            <ImpactCard
-              icon={<TrendingUp className="w-16 h-16" />}
-              number="8.5%"
-              label="Taxa de Engajamento B2B"
-              description="Muito acima da média do mercado digital"
-              color="from-magna-magenta to-pink-500"
-            />
-          </div>
+        <div className="container mx-auto px-6">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
+                
+                {/* ESQUERDA: MENU DE SELEÇÃO */}
+                <div className="lg:col-span-4 space-y-4 relative z-10 order-2 lg:order-1">
+                    <h2 className="text-xl md:text-2xl font-semibold text-white mb-6 md:mb-8 tracking-tight">Escolha o Formato</h2>
+                    {FORMATS.map((format) => (
+                        <button
+                            key={format.id}
+                            onClick={() => setActiveFormat(format)}
+                            className={`w-full text-left p-4 md:p-5 rounded-xl border transition-all duration-300 group ${
+                                activeFormat.id === format.id 
+                                ? 'bg-white/10 border-purple-500/50 shadow-[0_0_20px_rgba(168,85,247,0.15)] translate-x-2' 
+                                : 'bg-transparent border-white/5 hover:bg-white/5 hover:border-white/10 hover:translate-x-1'
+                            }`}
+                        >
+                            <h3 className={`text-sm md:text-base font-semibold mb-1 transition-colors ${
+                                activeFormat.id === format.id ? 'text-white' : 'text-gray-300'
+                            }`}>
+                                {format.label}
+                            </h3>
+                            <p className="text-xs md:text-sm text-gray-500 font-light leading-relaxed">{format.desc}</p>
+                        </button>
+                    ))}
+                </div>
 
-          {/* Stats Secundárias */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 max-w-4xl mx-auto">
-            <MiniStat icon={<Eye />} value="50K+" label="Pageviews/mês" />
-            <MiniStat icon={<BarChart3 />} value="72%" label="Taxa de Retorno" />
-            <MiniStat icon={<Sparkles />} value="4.8/5" label="Satisfação" />
-            <MiniStat icon={<Zap />} value="+120%" label="Crescimento" />
-          </div>
-        </div>
-      </section>
+                {/* DIREITA: MOCKUP CENA (MacBook + iPhone) */}
+                <div className="lg:col-span-8 relative perspective-[2000px] order-1 lg:order-2 mb-12 lg:mb-0">
+                    
+                    {/* Cena Container */}
+                    <div className="relative flex flex-col md:flex-row items-center md:items-end justify-center gap-6 md:gap-8">
+                        
+                        {/* === MACBOOK PRO === */}
+                        <div className="relative w-full max-w-[600px] hidden md:block">
+                            {/* Tampa/Tela */}
+                            <div className="relative bg-[#1d1d1f] rounded-[18px] p-[14px] border-[2px] border-[#3d3d3f] shadow-2xl overflow-hidden">
+                                {/* Notch */}
+                                <div className="absolute top-[14px] left-1/2 -translate-x-1/2 w-40 h-7 bg-black rounded-b-xl z-20 flex items-center justify-center gap-2">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-[#1d1d1f]"></div>
+                                    <div className="w-2 h-2 rounded-full bg-[#0a0a0a] border border-[#1d1d1f]"></div>
+                                </div>
+                                
+                                {/* TELA */}
+                                <div className="aspect-[16/10] bg-[#050505] rounded-[10px] overflow-hidden relative">
+                                    {/* Navbar */}
+                                    <div className="h-12 bg-black/50 border-b border-white/10 flex items-center px-6 gap-4">
+                                        <div className="w-24 h-4 bg-white/20 rounded-full"></div>
+                                        <div className="flex gap-4 ml-auto">
+                                            <div className="w-12 h-3 bg-white/10 rounded-full"></div>
+                                            <div className="w-12 h-3 bg-white/10 rounded-full"></div>
+                                            <div className="w-8 h-8 bg-purple-600 rounded-full"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    {/* CONTEÚDO */}
+                                    <div className="p-6 flex gap-6 h-full">
+                                        <div className="flex-1 space-y-6">
+                                            {/* HEADER/BILLBOARD */}
+                                            <div className={`h-48 w-full rounded-xl border transition-all duration-500 ${isHighlighted('header') ? highlightClass : normalClass}`}>
+                                                {isHighlighted('header') && "SUA MARCA AQUI"}
+                                            </div>
+                                            
+                                            {/* Feed */}
+                                            <div className="space-y-4">
+                                                <div className="w-1/2 h-6 bg-white/10 rounded-lg"></div>
+                                                <div className="flex gap-4">
+                                                    {/* NATIVE AD */}
+                                                    <div className={`flex-1 h-32 rounded-xl border transition-all duration-500 ${isHighlighted('feed') ? highlightClass : normalClass}`}>
+                                                        {isHighlighted('feed') && "NATIVE AD"}
+                                                    </div>
+                                                    <div className="flex-1 h-32 bg-white/5 rounded-xl border border-white/10"></div>
+                                                </div>
+                                                <div className="flex gap-4">
+                                                    <div className="flex-1 h-32 bg-white/5 rounded-xl border border-white/10"></div>
+                                                    <div className="flex-1 h-32 bg-white/5 rounded-xl border border-white/10"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        {/* Sidebar */}
+                                        <div className="w-64 flex flex-col gap-4">
+                                             <div className="w-full h-10 bg-white/10 rounded-lg mb-4"></div>
+                                             {/* SIDEBAR DESTAQUE */}
+                                             <div className={`w-full h-64 rounded-xl border transition-all duration-500 ${isHighlighted('sidebar') ? highlightClass : normalClass}`}>
+                                                {isHighlighted('sidebar') && "DESTAQUE LATERAL"}
+                                             </div>
+                                             <div className="flex-1 bg-white/5 rounded-xl border border-white/10"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            {/* Base */}
+                            <div className="relative -mt-1 h-4 bg-[#2d2d2f] rounded-b-[20px] border-t border-[#0a0a0a] shadow-lg">
+                                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-2 bg-[#1d1d1f] rounded-b-md"></div>
+                            </div>
+                        </div>
 
-      {/* Formatos de Mídia (Produtos) */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-black uppercase mb-4">
-              Formatos Disponíveis
-            </h2>
-            <p className="text-xl text-gray-400">
-              Soluções flexíveis para cada tipo de objetivo
-            </p>
-          </div>
+                        {/* === IPHONE === */}
+                        <div className="relative w-full max-w-[280px] md:w-[280px] z-20 md:-ml-20">
+                            {/* Frame */}
+                            <div className="relative bg-[#1d1d1f] rounded-[45px] p-[12px] border-[4px] border-[#3d3d3f] shadow-[0_20px_40px_-10px_rgba(0,0,0,0.5)] overflow-hidden">
+                                {/* Dynamic Island */}
+                                <div className="absolute top-[18px] left-1/2 -translate-x-1/2 w-28 h-8 bg-black rounded-full z-30 flex items-center justify-end px-3 gap-2">
+                                     <div className="w-2 h-2 rounded-full bg-[#1d1d1f]"></div>
+                                </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            
-            {/* Banner Homepage */}
-            <MediaFormatCard
-              icon={<Megaphone className="w-12 h-12" />}
-              title="Banner Homepage"
-              price="A partir de R$ 1.500/mês"
-              description="Visibilidade máxima no topo do portal, primeira coisa que os usuários veem."
-              features={[
-                'Posicionamento Premium',
-                'Todas as páginas do site',
-                'Design responsivo incluído',
-                'Relatório de performance',
-                'Segmentação por categoria'
-              ]}
-              highlight={false}
-            />
+                                {/* TELA MOBILE */}
+                                <div className="aspect-[9/19.5] bg-[#050505] rounded-[35px] overflow-hidden relative">
+                                     {/* Navbar Mobile */}
+                                    <div className="h-16 pt-8 bg-black/50 border-b border-white/10 flex items-center px-6 justify-between">
+                                        <div className="w-20 h-4 bg-white/20 rounded-full"></div>
+                                        <div className="w-8 h-8 bg-white/10 rounded-full"></div>
+                                    </div>
 
-            {/* Publipost / Review */}
-            <MediaFormatCard
-              icon={<FileText className="w-12 h-12" />}
-              title="Publipost / Review de Produto"
-              price="A partir de R$ 2.500"
-              description="Artigo técnico completo sobre seu equipamento ou serviço no nosso Blog."
-              features={[
-                'Conteúdo editorial profissional',
-                'SEO otimizado',
-                'Galeria de fotos/vídeos',
-                'Permanência ilimitada',
-                'Compartilhamento em redes sociais'
-              ]}
-              highlight={true}
-            />
+                                    {/* CONTEÚDO MOBILE */}
+                                    <div className="p-4 space-y-4 overflow-hidden">
+                                        {/* HEADER MOBILE */}
+                                        <div className={`h-40 w-full rounded-2xl border transition-all duration-500 ${isHighlighted('header') ? highlightClass : normalClass}`}>
+                                              {isHighlighted('header') && "BANNER MOBILE"}
+                                        </div>
+                                        
+                                        <div className="w-3/4 h-5 bg-white/10 rounded-lg"></div>
+                                        <div className="w-1/2 h-5 bg-white/10 rounded-lg mb-6"></div>
 
-            {/* E-mail Marketing */}
-            <MediaFormatCard
-              icon={<Mail className="w-12 h-12" />}
-              title="E-mail Marketing"
-              price="A partir de R$ 3.000"
-              description="Disparo exclusivo para nossa base qualificada de profissionais."
-              features={[
-                'Base segmentada por categoria',
-                'Criação do layout incluída',
-                'Métricas de abertura/clique',
-                'Até 3 disparos mensais',
-                'Suporte dedicado'
-              ]}
-              highlight={false}
-            />
-          </div>
+                                         {/* SIDEBAR vira topo */}
+                                         {isHighlighted('sidebar') && (
+                                            <div className={`h-24 w-full rounded-2xl border mb-4 transition-all duration-500 ${highlightClass}`}>
+                                                DESTAQUE BUSCA
+                                            </div>
+                                         )}
 
-          {/* Opções Adicionais */}
-          <div className="mt-12 text-center">
-            <p className="text-gray-400 mb-4">
-              Também oferecemos: <strong className="text-white">Branded Content</strong>, <strong className="text-white">Patrocínio de Entrevistas</strong>, <strong className="text-white">Banners Segmentados</strong> e mais.
-            </p>
-            <button
-              onClick={handleContactCommercial}
-              className="text-magna-cyan hover:text-magna-magenta transition-colors font-semibold underline"
-            >
-              Ver todas as opções →
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Final (Alta Conversão) */}
-      <section className="py-20 bg-gradient-to-r from-magna-violet via-magna-magenta to-magna-violet relative overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)',
-            backgroundSize: '30px 30px'
-          }} />
-        </div>
-
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl md:text-6xl font-black uppercase mb-6">
-              Receba Nosso Mídia Kit Completo
-            </h2>
-            <p className="text-2xl mb-8 text-white/90">
-              Todas as informações, formatos, alcance e cases de sucesso em um único documento.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <button
-                onClick={handleContactCommercial}
-                className="flex items-center gap-3 px-8 py-5 bg-white text-magna-violet hover:bg-gray-100 font-black text-lg rounded-xl transition-all shadow-2xl transform hover:scale-105"
-              >
-                <Mail className="w-6 h-6" />
-                Falar com o Comercial
-              </button>
-
-              <button
-                onClick={handleDownloadMediaKit}
-                className="flex items-center gap-3 px-8 py-5 bg-black/30 hover:bg-black/50 backdrop-blur-sm text-white font-black text-lg rounded-xl transition-all border-2 border-white/30"
-              >
-                <Download className="w-6 h-6" />
-                Baixar Apresentação (PDF)
-              </button>
+                                         {/* FEED NATIVE */}
+                                        <div className={`h-64 w-full rounded-2xl border transition-all duration-500 ${isHighlighted('feed') ? highlightClass : normalClass}`}>
+                                              {isHighlighted('feed') && "NATIVE POST"}
+                                        </div>
+                                         <div className="h-64 w-full bg-white/5 rounded-2xl border border-white/10"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
+      </div>
 
-            <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-white/80">
-              <a 
-                href={`mailto:${siteConfig.emails.comercial}`}
-                className="hover:text-white transition-colors flex items-center gap-2"
-              >
-                <Mail className="w-4 h-4" />
-                {siteConfig.emails.comercial}
-              </a>
-              <span className="hidden sm:inline">•</span>
-              <a 
-                href={`https://wa.me/${siteConfig.whatsapp.number}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-white transition-colors flex items-center gap-2"
-              >
-                <Megaphone className="w-4 h-4" />
-                WhatsApp Comercial
-              </a>
+      {/* FOOTER CTA */}
+      <div className="container mx-auto px-6 py-16 md:py-24 text-center border-t border-white/5">
+            <h2 className="text-2xl md:text-3xl font-semibold text-white mb-6 md:mb-8 tracking-tight">Pronto para conectar sua marca?</h2>
+             <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                 <a
+                    href="mailto:comercial@portalmagnafest.com.br"
+                    className="inline-flex items-center justify-center gap-2 h-11 px-6 rounded-full bg-white text-black hover:bg-gray-200 font-semibold transition-colors shadow-lg"
+                 >
+                    <Mail className="w-4 h-4" strokeWidth={1.25} /> Falar com Consultor
+                 </a>
+                 <a 
+                    href="/assets/docs/media-kit-magnafest-2025.pdf" 
+                    download
+                    className="inline-flex items-center justify-center gap-2 h-11 px-6 rounded-full border border-white/10 text-white hover:bg-white/5 font-semibold transition-colors"
+                 >
+                    <Download className="w-4 h-4" strokeWidth={1.25} /> Baixar Mídia Kit (PDF)
+                 </a>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Thank You Toast */}
-      {showThankYou && (
-        <div className="fixed bottom-8 right-8 z-50 bg-green-600 text-white px-6 py-4 rounded-xl shadow-2xl animate-slide-in-right">
-          <div className="flex items-center gap-3">
-            <CheckCircle className="w-6 h-6" />
-            <p className="font-bold">Obrigado! Nossa equipe entrará em contato em breve.</p>
-          </div>
-        </div>
-      )}
-    </main>
-  );
-}
-
-// =====================================================================
-// SUB-COMPONENTS
-// =====================================================================
-
-interface ImpactCardProps {
-  icon: React.ReactNode;
-  number: string;
-  label: string;
-  description: string;
-  color: string;
-}
-
-function ImpactCard({ icon, number, label, description, color }: ImpactCardProps) {
-  return (
-    <div className="bg-black border border-white/10 rounded-2xl p-8 hover:border-magna-cyan/50 transition-all group">
-      <div className={`bg-gradient-to-br ${color} w-20 h-20 rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform`}>
-        {icon}
       </div>
-      <p className={`text-5xl font-black mb-2 bg-gradient-to-r ${color} bg-clip-text text-transparent`}>
-        {number}
-      </p>
-      <h3 className="text-xl font-bold mb-2">{label}</h3>
-      <p className="text-gray-400 text-sm">{description}</p>
-    </div>
-  );
-}
-
-interface MiniStatProps {
-  icon: React.ReactNode;
-  value: string;
-  label: string;
-}
-
-function MiniStat({ icon, value, label }: MiniStatProps) {
-  return (
-    <div className="bg-white/5 border border-white/10 rounded-lg p-4 text-center hover:bg-white/10 transition-all">
-      <div className="text-magna-cyan mb-2 flex justify-center">
-        {icon}
-      </div>
-      <p className="text-2xl font-black text-white mb-1">{value}</p>
-      <p className="text-xs text-gray-400">{label}</p>
-    </div>
-  );
-}
-
-interface MediaFormatCardProps {
-  icon: React.ReactNode;
-  title: string;
-  price: string;
-  description: string;
-  features: string[];
-  highlight: boolean;
-}
-
-function MediaFormatCard({ icon, title, price, description, features, highlight }: MediaFormatCardProps) {
-  return (
-    <div className={`relative bg-magna-dark border rounded-2xl p-8 hover:scale-105 transition-transform ${
-      highlight 
-        ? 'border-magna-violet shadow-[0_0_40px_rgba(138,43,226,0.4)]' 
-        : 'border-white/10'
-    }`}>
-      {highlight && (
-        <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-6 py-2 bg-gradient-to-r from-magna-violet to-magna-magenta text-white text-sm font-black rounded-full shadow-lg">
-          MAIS POPULAR
-        </div>
-      )}
-
-      <div className={`${highlight ? 'text-magna-violet' : 'text-white'} mb-4`}>
-        {icon}
-      </div>
-
-      <h3 className="text-2xl font-bold mb-2">{title}</h3>
-      <p className={`text-3xl font-black mb-4 ${highlight ? 'text-magna-violet' : 'text-white'}`}>
-        {price}
-      </p>
-      <p className="text-gray-400 mb-6 text-sm">
-        {description}
-      </p>
-
-      <ul className="space-y-3 mb-8">
-        {features.map((feature, idx) => (
-          <li key={idx} className="flex items-start gap-2 text-sm">
-            <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-            <span className="text-gray-300">{feature}</span>
-          </li>
-        ))}
-      </ul>
-
-      <button
-        onClick={() => {
-          const subject = `Interesse em ${title}`;
-          window.location.href = `mailto:${siteConfig.emails.comercial}?subject=${encodeURIComponent(subject)}`;
-        }}
-        className={`w-full py-4 rounded-xl font-bold transition-all ${
-          highlight
-            ? 'bg-gradient-to-r from-magna-violet to-magna-magenta text-white hover:opacity-90'
-            : 'bg-white/10 hover:bg-white/20 text-white'
-        }`}
-      >
-        Solicitar Proposta
-      </button>
     </div>
   );
 }
