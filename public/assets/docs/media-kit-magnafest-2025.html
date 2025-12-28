@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MagnaFest - Media Kit 2025</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #1a1a1a;
+            line-height: 1.6;
+        }
+        
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 20mm;
+            background: white;
+            page-break-after: always;
+        }
+        
+        .cover {
+            background: linear-gradient(135deg, #1e1b4b 0%, #5b21b6 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .logo {
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: -0.05em;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #fbbf24, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .tagline {
+            font-size: 1.5rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        
+        .year {
+            font-size: 5rem;
+            font-weight: 900;
+            margin: 2rem 0;
+            opacity: 0.1;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #1e1b4b;
+            font-weight: 800;
+        }
+        
+        h2 {
+            font-size: 2rem;
+            margin: 2rem 0 1rem;
+            color: #5b21b6;
+            font-weight: 700;
+        }
+        
+        h3 {
+            font-size: 1.3rem;
+            margin: 1.5rem 0 0.5rem;
+            color: #1e1b4b;
+            font-weight: 600;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid #5b21b6;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #5b21b6;
+            line-height: 1;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+        }
+        
+        .package {
+            background: #f9fafb;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            border: 2px solid #e5e7eb;
+        }
+        
+        .package-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .package-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1e1b4b;
+        }
+        
+        .package-price {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #5b21b6;
+        }
+        
+        .package-features {
+            list-style: none;
+            margin: 1rem 0;
+        }
+        
+        .package-features li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .package-features li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+        }
+        
+        .color-palette {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .color-box {
+            flex: 1;
+            height: 80px;
+            border-radius: 8px;
+            display: flex;
+            align-items: flex-end;
+            padding: 0.5rem;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .contact-box {
+            background: linear-gradient(135deg, #1e1b4b 0%, #5b21b6 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-top: 2rem;
+        }
+        
+        .contact-box h3 {
+            color: white;
+            margin-top: 0;
+        }
+        
+        .contact-info {
+            margin: 1rem 0;
+            line-height: 2;
+        }
+        
+        .highlight {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: #1e1b4b;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        th {
+            background: #f3f4f6;
+            font-weight: 700;
+            color: #1e1b4b;
+        }
+        
+        @media print {
+            body {
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- PÁGINA 1: CAPA -->
+    <div class="page cover">
+        <div class="logo">MAGNAFEST</div>
+        <div class="tagline">Conectando profissionais ao mundo dos eventos</div>
+        <div class="year">2025</div>
+        <p style="font-size: 1.2rem; max-width: 600px; margin-top: 2rem;">
+            A maior plataforma de networking para o mercado de eventos no Brasil
+        </p>
+    </div>
+
+    <!-- PÁGINA 2: SOBRE A PLATAFORMA -->
+    <div class="page">
+        <h1>Sobre o MagnaFest</h1>
+        
+        <p style="font-size: 1.1rem; margin: 1.5rem 0; line-height: 1.8;">
+            O <strong>MagnaFest</strong> é a principal plataforma digital que conecta profissionais, 
+            fornecedores e empresas do mercado de eventos no Brasil. Oferecemos um ecossistema 
+            completo para quem busca excelência, networking e oportunidades de negócios.
+        </p>
+
+        <h2>Números que Impressionam</h2>
+        
+        <div class="grid">
+            <div class="stat-card">
+                <div class="stat-number">50K+</div>
+                <div class="stat-label">Usuários Ativos Mensais</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">5K+</div>
+                <div class="stat-label">Profissionais Cadastrados</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">2K+</div>
+                <div class="stat-label">Eventos Cadastrados/Ano</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">15K+</div>
+                <div class="stat-label">Anúncios Publicados</div>
+            </div>
+        </div>
+
+        <h2>Nosso Público</h2>
+        
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1.5rem 0;">
+            <div style="text-align: center;">
+                <div style="font-size: 2rem; color: #5b21b6;">35%</div>
+                <div style="color: #6b7280;">Produtores de Eventos</div>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 2rem; color: #5b21b6;">40%</div>
+                <div style="color: #6b7280;">Fornecedores/Prestadores</div>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 2rem; color: #5b21b6;">25%</div>
+                <div style="color: #6b7280;">Empresas Contratantes</div>
+            </div>
+        </div>
+
+        <h2>Principais Categorias</h2>
+        
+        <table>
+            <tr>
+                <td>🎤 DJs e Música</td>
+                <td>📸 Fotografia</td>
+                <td>🎬 Audiovisual</td>
+            </tr>
+            <tr>
+                <td>🍽️ Catering</td>
+                <td>🎭 Entretenimento</td>
+                <td>🎨 Decoração</td>
+            </tr>
+            <tr>
+                <td>🚗 Logística</td>
+                <td>💡 Iluminação</td>
+                <td>📱 Tecnologia</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- PÁGINA 3: PACOTES DE PUBLICIDADE -->
+    <div class="page">
+        <h1>Pacotes de Publicidade</h1>
+        
+        <p style="margin: 1rem 0 2rem;">
+            Posicione sua marca de forma estratégica na maior plataforma de eventos do Brasil.
+        </p>
+
+        <div class="package">
+            <div class="package-header">
+                <div class="package-name">🥉 Pacote BRONZE</div>
+                <div class="package-price">R$ 1.500/mês</div>
+            </div>
+            <ul class="package-features">
+                <li>Banner lateral na Home (300x250px)</li>
+                <li>Destaque em 1 categoria</li>
+                <li>Até 3 anúncios em destaque</li>
+                <li>Selo "Patrocinador"</li>
+                <li>Relatório mensal de performance</li>
+            </ul>
+        </div>
+
+        <div class="package">
+            <div class="package-header">
+                <div class="package-name">🥈 Pacote SILVER</div>
+                <div class="package-price">R$ 3.500/mês</div>
+            </div>
+            <ul class="package-features">
+                <li>Banner Hero na Home (1920x400px)</li>
+                <li>Destaque em 3 categorias</li>
+                <li>Até 10 anúncios em destaque</li>
+                <li>Artigo patrocinado no blog</li>
+                <li>Presença em newsletter semanal</li>
+                <li>Relatórios semanais + Analytics</li>
+            </ul>
+        </div>
+
+        <div class="package">
+            <div class="package-header">
+                <div class="package-name">🥇 Pacote GOLD</div>
+                <div class="package-price">R$ 7.500/mês</div>
+            </div>
+            <ul class="package-features">
+                <li>Banner Hero rotativo (posição premium)</li>
+                <li>Destaque em TODAS as categorias</li>
+                <li>Anúncios ilimitados em destaque</li>
+                <li>3 artigos patrocinados/mês</li>
+                <li>Newsletter dedicada</li>
+                <li>Pop-up estratégico (1x por semana)</li>
+                <li>Vídeo institucional na Home</li>
+                <li>Dashboard de métricas em tempo real</li>
+                <li>Suporte prioritário</li>
+            </ul>
+        </div>
+
+        <div class="package">
+            <div class="package-header">
+                <div class="package-name">💎 Pacote PLATINUM (Exclusivo)</div>
+                <div class="package-price">Sob Consulta</div>
+            </div>
+            <ul class="package-features">
+                <li>Plano customizado para sua necessidade</li>
+                <li>Integração de API personalizada</li>
+                <li>Cobertura de eventos exclusiva</li>
+                <li>Produção de conteúdo dedicada</li>
+                <li>Consultoria estratégica mensal</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- PÁGINA 4: ESPECIFICAÇÕES TÉCNICAS -->
+    <div class="page">
+        <h1>Especificações Técnicas</h1>
+
+        <h2>Formatos de Anúncios</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Posicionamento</th>
+                    <th>Dimensões</th>
+                    <th>Formato</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Banner Hero (Desktop)</td>
+                    <td>1920 x 400px</td>
+                    <td>JPG, PNG, WebP</td>
+                </tr>
+                <tr>
+                    <td>Banner Hero (Mobile)</td>
+                    <td>800 x 600px</td>
+                    <td>JPG, PNG, WebP</td>
+                </tr>
+                <tr>
+                    <td>Banner Lateral</td>
+                    <td>300 x 250px</td>
+                    <td>JPG, PNG, GIF animado</td>
+                </tr>
+                <tr>
+                    <td>Banner Retangular</td>
+                    <td>728 x 90px</td>
+                    <td>JPG, PNG</td>
+                </tr>
+                <tr>
+                    <td>Vídeo Institucional</td>
+                    <td>1920 x 1080px (16:9)</td>
+                    <td>MP4, WebM (máx 30s)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Requisitos Técnicos</h3>
+        <ul style="margin-left: 2rem; line-height: 2;">
+            <li>Tamanho máximo de arquivo: 2MB para imagens, 10MB para vídeos</li>
+            <li>Resolução mínima: 72dpi para web</li>
+            <li>Espaço de cor: RGB</li>
+            <li>Animações: Máximo 30 segundos de loop</li>
+        </ul>
+
+        <h2>Identidade Visual</h2>
+
+        <h3>Paleta de Cores</h3>
+        <div class="color-palette">
+            <div class="color-box" style="background: #1e1b4b;">#1e1b4b<br>Primary Dark</div>
+            <div class="color-box" style="background: #5b21b6;">#5b21b6<br>Primary</div>
+            <div class="color-box" style="background: #fbbf24;">#fbbf24<br>Accent Gold</div>
+            <div class="color-box" style="background: #f59e0b;">#f59e0b<br>Accent Orange</div>
+        </div>
+
+        <h3>Tipografia</h3>
+        <div style="margin: 1rem 0;">
+            <div style="font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem;">Inter Bold</div>
+            <p style="color: #6b7280;">Usado para títulos, headers e CTAs</p>
+        </div>
+        <div style="margin: 1rem 0;">
+            <div style="font-size: 1.5rem; font-weight: 400;">Inter Regular</div>
+            <p style="color: #6b7280;">Usado para corpo de texto e descrições</p>
+        </div>
+
+        <h2>Métricas e Performance</h2>
+        
+        <div class="grid">
+            <div class="stat-card">
+                <div class="stat-number">2.5min</div>
+                <div class="stat-label">Tempo Médio no Site</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">4.2</div>
+                <div class="stat-label">Páginas por Sessão</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">85%</div>
+                <div class="stat-label">Taxa de Cliques (CTR)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">150K+</div>
+                <div class="stat-label">Pageviews Mensais</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PÁGINA 5: CONTATO -->
+    <div class="page">
+        <h1>Fale Conosco</h1>
+        
+        <p style="font-size: 1.1rem; margin: 1.5rem 0;">
+            Estamos prontos para criar uma <span class="highlight">estratégia personalizada</span> 
+            para sua marca. Entre em contato com nossa equipe comercial.
+        </p>
+
+        <div class="contact-box">
+            <h3>Departamento Comercial</h3>
+            <div class="contact-info">
+                <div>📧 <strong>E-mail:</strong> comercial@portalmagnafest.com.br</div>
+                <div>📱 <strong>WhatsApp:</strong> +55 (11) 9 9999-9999</div>
+                <div>🌐 <strong>Website:</strong> www.portalmagnafest.com.br</div>
+                <div>📍 <strong>Endereço:</strong> São Paulo - SP, Brasil</div>
+            </div>
+        </div>
+
+        <h2 style="margin-top: 3rem;">Cases de Sucesso</h2>
+        
+        <div style="background: #f9fafb; padding: 1.5rem; border-radius: 12px; margin: 1rem 0;">
+            <h3 style="color: #5b21b6; margin-top: 0;">🎉 Empresa Alpha Sound</h3>
+            <p style="margin: 0.5rem 0;">
+                "Em 3 meses com o pacote Gold, aumentamos nossas contratações em <strong>230%</strong> 
+                e nos tornamos referência na categoria de Som e Iluminação."
+            </p>
+            <p style="color: #6b7280; font-size: 0.9rem; margin-top: 0.5rem;">
+                — João Silva, CEO Alpha Sound
+            </p>
+        </div>
+
+        <div style="background: #f9fafb; padding: 1.5rem; border-radius: 12px; margin: 1rem 0;">
+            <h3 style="color: #5b21b6; margin-top: 0;">📸 Studio Foto Premium</h3>
+            <p style="margin: 0.5rem 0;">
+                "O MagnaFest nos conectou com clientes de alto padrão. Nosso ROI foi de 
+                <strong>450%</strong> no primeiro trimestre de parceria."
+            </p>
+            <p style="color: #6b7280; font-size: 0.9rem; margin-top: 0.5rem;">
+                — Maria Santos, Diretora Studio Foto Premium
+            </p>
+        </div>
+
+        <h2 style="margin-top: 3rem;">Próximos Passos</h2>
+        
+        <div style="background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); padding: 2rem; border-radius: 12px; margin-top: 1.5rem;">
+            <ol style="margin-left: 1.5rem; line-height: 2; font-weight: 600; color: #1e1b4b;">
+                <li>Entre em contato pelo e-mail ou WhatsApp</li>
+                <li>Agende uma reunião com nossa equipe comercial</li>
+                <li>Receba uma proposta personalizada</li>
+                <li>Aprove o plano e forneça os materiais</li>
+                <li>Lance sua campanha em até 48h!</li>
+            </ol>
+        </div>
+
+        <div style="text-align: center; margin-top: 3rem; padding-top: 2rem; border-top: 2px solid #e5e7eb;">
+            <div class="logo" style="font-size: 2rem; background: linear-gradient(to right, #1e1b4b, #5b21b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                MAGNAFEST
+            </div>
+            <p style="color: #6b7280; margin-top: 0.5rem;">
+                Conectando profissionais ao mundo dos eventos
+            </p>
+            <p style="color: #9ca3af; font-size: 0.85rem; margin-top: 1rem;">
+                © 2025 MagnaFest. Todos os direitos reservados.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

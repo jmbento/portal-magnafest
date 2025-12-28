@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Navegar para o diretório
-cd "/Volumes/bxdMAC/Projetos apps/canapev"
+cd "/Volumes/bxdMAC/Projetos apps/Portal MagnaFest"
 
 # Adicionar todos os arquivos
 git add .

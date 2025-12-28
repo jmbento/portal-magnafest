@@ -20,9 +20,19 @@ export default function Home() {
       {/* 1. HERO SECTION (O Impacto) */}
       <section className="relative w-full h-[90vh] flex flex-col items-center justify-center overflow-hidden">
         
+        {/* Background Image com Overlay */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="/assets/hero-bg.jpg"
+            alt="Festival Background"
+            className="w-full h-full object-cover opacity-40"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-magna-black/80 via-magna-black/60 to-magna-black"></div>
+        </div>
+        
         {/* Efeitos de Luz de Fundo (Spotlights) */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-magna-violet/20 blur-[120px] rounded-full pointer-events-none" />
-        <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-magna-cyan/10 blur-[100px] rounded-full pointer-events-none" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-magna-violet/20 blur-[120px] rounded-full pointer-events-none z-[1]" />
+        <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-magna-cyan/10 blur-[100px] rounded-full pointer-events-none z-[1]" />
 
         <div className="relative z-10 container mx-auto px-4 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8 backdrop-blur-md">

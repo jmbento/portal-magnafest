@@ -110,7 +110,7 @@ function App() {
 
           {/* Guias/Compliance */}
           <Route path="guia" element={<DirectoryExamplePage />} />
-          <Route path="guia-legal" element={<CompliancePage />} />
+          <Route path="guia-legal" element={<GuidesPage />} />
           <Route path="guias" element={<GuidesPage />} />
           <Route path="termos" element={<TermsPage />} />
           <Route path="terms" element={<TermsPage />} /> {/* Alias em inglês */}

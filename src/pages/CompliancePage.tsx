@@ -657,7 +657,11 @@ export default function CompliancePage() {
   };
 
   return (
-    <main className="min-h-screen bg-magna-black">
+    <main className="min-h-screen bg-gradient-to-br from-[#1a0b2e] via-[#16082a] to-magna-black relative overflow-hidden">
+      {/* Efeitos de luz de fundo */}
+      <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-magna-violet/20 blur-[120px] rounded-full pointer-events-none"></div>
+      <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-magna-magenta/10 blur-[100px] rounded-full pointer-events-none"></div>
+      
       {/* Toast de Notificação de Localização */}
       {locationNotification && (
         <div className="fixed top-4 right-4 z-50 animate-slide-in-right">
@@ -703,7 +707,7 @@ export default function CompliancePage() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="O que você precisa regularizar? (Ex: MEI, ECAD, Alvará...)"
-              className="w-full pl-16 pr-6 py-5 text-lg bg-white/5 border-2 border-white/20 text-white rounded-xl focus:border-magna-cyan focus:ring-4 focus:ring-magna-cyan/20 outline-none transition-all font-medium placeholder-gray-500"
+              className="w-full pl-16 pr-6 py-5 text-lg bg-gradient-to-r from-magna-violet/20 to-magna-magenta/20 border-2 border-magna-violet/50 text-white rounded-xl focus:border-magna-cyan focus:ring-4 focus:ring-magna-cyan/30 outline-none transition-all font-medium placeholder-gray-400 backdrop-blur-sm shadow-lg shadow-magna-violet/20"
             />
           </div>
 
@@ -773,14 +777,14 @@ export default function CompliancePage() {
             return (
               <div
                 key={article.id}
-                className="bg-magna-dark rounded-xl border-2 border-white/10 hover:border-magna-cyan hover:shadow-[0_0_20px_rgba(138,43,226,0.3)] transition-all overflow-hidden"
+                className="bg-gradient-to-br from-magna-violet/10 to-magna-magenta/5 rounded-xl border-2 border-magna-violet/30 hover:border-magna-cyan hover:shadow-[0_0_30px_rgba(138,43,226,0.6)] transition-all overflow-hidden backdrop-blur-sm"
               >
                 {/* Card Header */}
                 <div className="p-6 pb-4">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
-                      <div className="p-3 bg-magna-violet/20 rounded-lg">
-                        <Icon className="w-6 h-6 text-magna-violet" />
+                      <div className="p-3 bg-gradient-to-br from-magna-violet to-magna-magenta rounded-lg shadow-lg shadow-magna-violet/50">
+                        <Icon className="w-6 h-6 text-white" />
                       </div>
                       <div>
                         <h3 className="text-xl font-bold text-white mb-2">
@@ -797,9 +801,9 @@ export default function CompliancePage() {
                       </div>
                     </div>
                     {article.isMandatory && (
-                      <div className="flex items-center gap-1 bg-red-500/20 px-3 py-1 rounded-full">
-                        <AlertTriangle className="w-4 h-4 text-red-400" />
-                        <span className="text-xs font-bold text-red-400">OBRIGATÓRIO</span>
+                      <div className="flex items-center gap-1 bg-gradient-to-r from-red-500/30 to-orange-500/30 px-3 py-1 rounded-full border border-red-400/50 shadow-lg shadow-red-500/20">
+                        <AlertTriangle className="w-4 h-4 text-red-300" />
+                        <span className="text-xs font-bold text-red-200">OBRIGATÓRIO</span>
                       </div>
                     )}
                   </div>
@@ -819,7 +823,7 @@ export default function CompliancePage() {
                   <div className="flex gap-3">
                     <button
                       onClick={() => setExpandedArticle(isExpanded ? null : article.id)}
-                      className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-magna-violet hover:bg-magna-magenta text-white font-semibold rounded-lg transition-colors"
+                      className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-magna-violet to-magna-magenta hover:from-magna-magenta hover:to-magna-violet text-white font-semibold rounded-lg transition-all shadow-lg shadow-magna-violet/30 hover:shadow-magna-magenta/50 hover:scale-105"
                     >
                       {isExpanded ? 'Fechar Guia' : 'Ler Guia Completo'}
                       <ChevronDown className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />

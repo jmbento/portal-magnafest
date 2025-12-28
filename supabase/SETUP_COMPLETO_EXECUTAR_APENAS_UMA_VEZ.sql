@@ -1,5 +1,5 @@
 -- =====================================================================
--- CANAPEV - SETUP COMPLETO DO BANCO DE DADOS
+-- MAGNAFEST - SETUP COMPLETO DO BANCO DE DADOS
 -- =====================================================================
 -- Este arquivo cria TODAS as tabelas necessárias de uma vez
 -- Execute ESTE ARQUIVO ÚNICO no SQL Editor do Supabase

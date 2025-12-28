@@ -46,10 +46,14 @@ export default function GuidesPage() {
   );
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-purple-900/30">
+    <div className="min-h-screen bg-gradient-to-br from-[#1a0b2e] via-[#16082a] to-magna-black text-white font-sans selection:bg-purple-900/30 relative overflow-hidden">
+      
+      {/* Efeitos de luz vibrantes */}
+      <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-magna-violet/20 blur-[120px] rounded-full pointer-events-none animate-pulse"></div>
+      <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-magna-magenta/15 blur-[100px] rounded-full pointer-events-none animate-pulse delay-1000"></div>
       
       {/* HEADER EDITORIAL */}
-      <div className="pt-24 pb-16 border-b border-white/5">
+      <div className="pt-24 pb-16 border-b border-magna-violet/20 relative z-10">
         <div className="container mx-auto px-6 max-w-5xl">
           <span className="text-purple-400 font-medium tracking-widest text-xs uppercase mb-4 block">
             Magna Intelligence
@@ -80,7 +84,7 @@ export default function GuidesPage() {
         {filteredGuides.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
             {filteredGuides.map((guide) => (
-              <div key={guide.id} className="group cursor-pointer flex flex-col h-full">
+              <div key={guide.id} className="group cursor-pointer flex flex-col h-full p-6 rounded-xl bg-gradient-to-br from-magna-violet/10 to-transparent border border-magna-violet/20 hover:border-magna-cyan/50 hover:shadow-[0_0_30px_rgba(138,43,226,0.4)] transition-all backdrop-blur-sm">
                 {/* Header do Card */}
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">

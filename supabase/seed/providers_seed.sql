@@ -32,7 +32,7 @@ INSERT INTO
         avatar_url
     )
 VALUES (
-        'Canapev Segurança VIP',
+        'MagnaFest Segurança VIP',
         'Segurança',
         'São Paulo',
         'SP',
@@ -41,14 +41,14 @@ VALUES (
             'whatsapp',
             '+5511999999999',
             'instagram',
-            'https://instagram.com/canapev',
+            'https://instagram.com/magnafest',
             'website',
-            'https://www.canapev.com.br',
+            'https://www.portalmagnafest.com.br',
             'email',
-            'contato@canapev.com.br'
+            'contato@portalmagnafest.com.br'
         ),
         true, -- Verificado
-        'https://ui-avatars.com/api/?name=Canapev&background=4F46E5&color=fff&size=200'
+        'https://ui-avatars.com/api/?name=MagnaFest&background=4F46E5&color=fff&size=200'
     );
 
 -- =====================================================================

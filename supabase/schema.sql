@@ -1,5 +1,5 @@
 -- =====================================================================
--- CANAPEV - Schema SQL (Tabela Events)
+-- MAGNAFEST - Schema SQL (Tabela Events)
 -- =====================================================================
 -- Arquivo: supabase/schema.sql
 -- Propósito: Schema de referência para a tabela events

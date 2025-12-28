@@ -5,7 +5,7 @@
 
 echo "🚀 Iniciando deploy do Portal MagnaFest..."
 
-cd "/Volumes/bxdMAC/Projetos apps/canapev"
+cd "/Volumes/bxdMAC/Projetos apps/Portal MagnaFest"
 
 # Build local primeiro para validar
 echo "📦 Rodando build local..."
@@ -17,7 +17,7 @@ if [ $? -eq 0 ]; then
   echo "🔐 Agora você precisa fazer login no Vercel"
   echo ""
   echo "Execute manualmente:"
-  echo "  cd \"/Volumes/bxdMAC/Projetos apps/canapev\""
+  echo "  cd \"/Volumes/bxdMAC/Projetos apps/Portal MagnaFest\""
   echo "  npx vercel login"
   echo "  npx vercel --prod"
   echo ""

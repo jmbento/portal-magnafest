@@ -32,7 +32,17 @@ export default function AdvertisePage() {
   const normalClass = "bg-white/5 border-white/10";
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-purple-500/30 pt-20 overflow-hidden">
+    <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-purple-500/30 pt-20 overflow-hidden relative">
+      
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <img 
+          src="/assets/advertise-cover.jpg"
+          alt="Advertise Background"
+          className="w-full h-full object-cover opacity-20"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/90 via-[#050505]/80 to-[#050505]"></div>
+      </div>
       
       {/* HERO SECTION */}
       <div className="container mx-auto px-6 py-20 text-center max-w-4xl relative z-10">
@@ -211,7 +221,7 @@ export default function AdvertisePage() {
                  </a>
                  <a 
                     href="/assets/docs/media-kit-magnafest-2025.pdf" 
-                    download
+                    download="media-kit-magnafest-2025.pdf"
                     className="inline-flex items-center justify-center gap-2 h-11 px-6 rounded-full border border-white/10 text-white hover:bg-white/5 font-semibold transition-colors"
                  >
                     <Download className="w-4 h-4" strokeWidth={1.25} /> Baixar Mídia Kit (PDF)

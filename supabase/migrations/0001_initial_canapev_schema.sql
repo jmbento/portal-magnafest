@@ -1,5 +1,5 @@
 -- =====================================================================
--- CANAPEV - Marketplace Nacional de Eventos
+-- MAGNAFEST - Marketplace Nacional de Eventos
 -- Migração Inicial do Schema do Banco de Dados
 -- =====================================================================
 -- Versão: 0001
@@ -103,7 +103,7 @@ WHERE
 COMMENT ON
 TABLE profiles IS 'Perfis públicos dos usuários, estendendo auth.users';
 
-COMMENT ON COLUMN profiles.is_verified IS 'Verificação manual pela equipe CANAPEV (badge de confiança)';
+COMMENT ON COLUMN profiles.is_verified IS 'Verificação manual pela equipe MagnaFest (badge de confiança)';
 
 COMMENT ON COLUMN profiles.role IS 'Define permissões e acesso a funcionalidades específicas';
 

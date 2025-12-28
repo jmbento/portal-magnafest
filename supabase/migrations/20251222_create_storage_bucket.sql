@@ -1,5 +1,5 @@
 -- =====================================================================
--- CANAPEV - Configuração do Supabase Storage
+-- MAGNAFEST - Configuração do Supabase Storage
 -- =====================================================================
 -- Cria o bucket para upload de imagens dos anúncios
 -- Execute este script no SQL Editor do Supabase
