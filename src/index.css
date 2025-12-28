@@ -1,39 +1,124 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-:root {
-  --background: #000000;
-  --foreground: #ededed;
+/* =====================================================================
+   TEMA CUSTOMIZADO - PORTAL MAGNAFEST (Tailwind CSS 4)
+   ===================================================================== */
+
+@theme {
+  /* Cores da Marca MagnaFest */
+  --color-magna-black: #000000;
+  --color-magna-dark: #0a0a0a;
+  --color-magna-violet: #8a2be2;
+  --color-magna-cyan: #00ffff;
+  --color-magna-magenta: #ff00ff;
+
+  /* Background e Foreground */
+  --color-background: #000000;
+  --color-foreground: #ededed;
+
+  /* Animações */
+  --ease-gradient: linear;
+
+  /* Fontes */
+  --font-sans: ui-sans-serif, system-ui, sans-serif;
 }
+
+/* =====================================================================
+   ESTILOS GLOBAIS
+   ===================================================================== */
 
 body {
-  color: var(--foreground);
-  background: #000000; /* Garante fundo preto */
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Inputs com fundo branco e texto escuro */
-input, select, textarea {
+/* Inputs com fundo branco e texto escuro para boa legibilidade */
+input,
+select,
+textarea {
   color-scheme: light;
   background-color: white !important;
-  color: #374151 !important; /* text-gray-700 */
-  border-color: #d1d5db; /* gray-300 */
+  color: #374151 !important;
+  border-color: #d1d5db;
+}
+
+input::placeholder {
+  color: #9ca3af !important;
 }
 
 /* =====================================================================
    ANIMAÇÕES CUSTOMIZADAS
    ===================================================================== */
-@layer utilities {
-  /* Animação de gradiente fluido para o logo */
-  .animate-text-flow {
-    background-size: 200% auto;
-    animation: textFlow 3s linear infinite;
+
+@keyframes textFlow {
+  0% {
+    background-position: 0% center;
   }
-  
-  @keyframes textFlow {
-    0% { background-position: 0% center; }
-    100% { background-position: 200% center; }
+  100% {
+    background-position: 200% center;
   }
+}
+
+@keyframes gradient {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-text-flow {
+  background-size: 200% auto;
+  animation: textFlow 3s linear infinite;
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient 3s ease infinite;
+}
+
+/* =====================================================================
+   UTILIDADES CUSTOMIZADAS
+   ===================================================================== */
+
+/* Gradiente neon cyberpunk */
+.bg-neon-gradient {
+  background: linear-gradient(
+    135deg,
+    var(--color-magna-violet) 0%,
+    var(--color-magna-cyan) 50%,
+    var(--color-magna-magenta) 100%
+  );
+}
+
+/* Texto com gradiente */
+.text-gradient {
+  background: linear-gradient(
+    90deg,
+    var(--color-magna-violet),
+    var(--color-magna-cyan),
+    var(--color-magna-magenta)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Borda neon */
+.border-neon {
+  border: 2px solid var(--color-magna-cyan);
+  box-shadow: 0 0 10px var(--color-magna-cyan);
+}
+
+/* Hover neon */
+.hover-neon:hover {
+  box-shadow: 0 0 20px var(--color-magna-violet),
+    0 0 40px var(--color-magna-cyan);
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
 }
