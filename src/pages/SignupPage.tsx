@@ -13,7 +13,7 @@ export default function SignupPage() {
     email: '',
     password: '',
     confirmPassword: '',
-    category: ''
+    categories: [] as string[]
   });
 
   const CATEGORIES = [
@@ -24,6 +24,9 @@ export default function SignupPage() {
     'Fotógrafo',
     'Cenógrafo',
     'Produtor de Eventos',
+    'Roadie',
+    'Rigger',
+    'Designer Gráfico',
     'Outro'
   ];
 
@@ -35,10 +38,25 @@ export default function SignupPage() {
     setError('');
   };
 
+  const toggleCategory = (category: string) => {
+    setFormData(prev => ({
+      ...prev,
+      categories: prev.categories.includes(category)
+        ? prev.categories.filter(c => c !== category)
+        : [...prev.categories, category]
+    }));
+    setError('');
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Validações
+    if (formData.categories.length === 0) {
+      setError('Selecione pelo menos uma categoria profissional');
+      return;
+    }
+
     if (formData.password !== formData.confirmPassword) {
       setError('As senhas não coincidem');
       return;
@@ -60,29 +78,27 @@ export default function SignupPage() {
         options: {
           data: {
             name: formData.name,
-            category: formData.category
+            categories: formData.categories
           }
         }
       });
 
       if (authError) throw authError;
 
-      // 2. Criar perfil no banco (apenas colunas básicas que existem)
+      // 2. Criar perfil no banco
       if (authData.user) {
         const { error: profileError } = await supabase
           .from('profiles')
           .insert({
             id: authData.user.id,
             name: formData.name,
-            description: formData.category,
-            is_claimed: false,
+            description: formData.categories.join(' • '),
+            is_claimed: true,
             source: 'user-signup'
           });
 
         if (profileError) {
-          // Se erro for por perfil já existir ou coluna não existir, ignorar
           console.error('Aviso ao criar perfil:', profileError);
-          // Continuar mesmo com erro - usuário será criado no auth
         }
       }
 
@@ -220,26 +236,38 @@ export default function SignupPage() {
               </div>
             </div>
 
-            {/* Categoria */}
+            {/* Categorias (Múltiplas) */}
             <div>
-              <label className="block text-sm font-bold text-gray-300 mb-2">
-                Categoria Profissional
+              <label className="block text-sm font-bold text-gray-300 mb-3">
+                <Briefcase className="inline w-5 h-5 mr-2 -mt-0.5" />
+                Suas Habilidades Profissionais
               </label>
-              <div className="relative">
-                <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-                <select
-                  name="category"
-                  required
-                  value={formData.category}
-                  onChange={handleChange}
-                  className="w-full bg-magna-dark border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:border-magna-violet transition-colors appearance-none cursor-pointer"
-                >
-                  <option value="">Selecione...</option>
-                  {CATEGORIES.map((cat) => (
-                    <option key={cat} value={cat}>{cat}</option>
-                  ))}
-                </select>
+              <p className="text-sm text-gray-500 mb-3">✨ Selecione todas que se aplicam (produtor + cenógrafo, etc)</p>
+              <div className="grid grid-cols-2 gap-3">
+                {CATEGORIES.map((cat) => (
+                  <label
+                    key={cat}
+                    className={`flex items-center gap-2 p-3 rounded-lg border cursor-pointer transition-all ${
+                      formData.categories.includes(cat)
+                        ? 'bg-magna-violet/20 border-magna-violet text-white'
+                        : 'bg-magna-dark/50 border-white/10 text-gray-400 hover:border-magna-violet/50'
+                    }`}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={formData.categories.includes(cat)}
+                      onChange={() => toggleCategory(cat)}
+                      className="w-4 h-4 accent-magna-violet"
+                    />
+                    <span className="text-sm font-medium">{cat}</span>
+                  </label>
+                ))}
               </div>
+              {formData.categories.length > 0 && (
+                <p className="mt-3 text-sm text-magna-cyan">
+                  ✓ {formData.categories.length} {formData.categories.length === 1 ? 'categoria selecionada' : 'categorias selecionadas'}
+                </p>
+              )}
             </div>
 
             {/* Senha */}
