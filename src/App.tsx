@@ -43,6 +43,7 @@ import SignupPage from './pages/SignupPage';
 import CreateListingPage from './pages/CreateListingPage';
 import TermsPage from './pages/Legal/TermsPage';
 import GuidesPage from './pages/Legal/GuidesPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 // =====================================================================
 // LAYOUT COMPONENT (Wrapper com Navbar)
@@ -57,23 +58,6 @@ function Layout() {
   );
 }
 
-// =====================================================================
-// 404 PAGE
-// =====================================================================
-
-function NotFoundPage() {
-  return (
-    <main className="min-h-[60vh] flex items-center justify-center">
-      <div className="text-center">
-        <h1 className="text-6xl font-bold text-gray-900 mb-4">404</h1>
-        <p className="text-xl text-gray-600 mb-8">Página não encontrada</p>
-        <a href="/" className="btn-primary px-6 py-3">
-          Voltar ao Início
-        </a>
-      </div>
-    </main>
-  );
-}
 
 // =====================================================================
 // APP PRINCIPAL (SEM BrowserRouter - já está no main.tsx)
