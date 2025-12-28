@@ -89,7 +89,7 @@ export default function AgendaPage() {
       const { data, error: fetchError } = await supabase
         .from('events')
         .select('*')
-        .eq('status', 'published')
+        // .eq('status', 'published') // Coluna status ainda não existe
         .gte('starts_at', new Date().toISOString())
         .order('starts_at', { ascending: true })
         .limit(20);

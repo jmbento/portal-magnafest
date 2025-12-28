@@ -86,7 +86,7 @@ export default function ProviderFilters() {
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Ex: João, MagnaFest..."
+              placeholder="Ex: cenografia, decoração, som, iluminação..."
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-colors"
             />
           </div>

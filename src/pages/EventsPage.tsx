@@ -32,21 +32,12 @@ export default function EventsPage() {
     setError(null);
 
     try {
-      // Query principal
+      // Query principal (sem tickets - relação não existe ainda)
       const { data: eventsData, error: eventsError } = await supabase
         .from('events')
-        .select(`
-          *,
-          tickets (
-            id,
-            price,
-            quantity_total,
-            quantity_sold,
-            active
-          )
-        `)
+        .select('*')
         .eq('status', 'published')
-        // .gte('starts_at', new Date().toISOString()) // Removido temporariamente
+        .gte('starts_at', new Date().toISOString())
         .order('starts_at', { ascending: true })
         .limit(12);
 

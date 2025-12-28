@@ -40,14 +40,14 @@ export default function ProvidersPage() {
       const category = searchParams.get('cat');
 
       let query = supabase
-        .from('providers')
+        .from('profiles')
         .select('*')
-        .order('is_verified', { ascending: false })
-        .order('name', { ascending: true });
+        .order('is_claimed', { ascending: false })
+        .order('created_at', { ascending: false });
 
-      // Filtro por nome
+      // Filtro por HABILIDADE/SERVIÇO (busca em description e name)
       if (searchTerm) {
-        query = query.ilike('name', `%${searchTerm}%`);
+        query = query.or(`description.ilike.%${searchTerm}%,name.ilike.%${searchTerm}%`);
       }
 
       // Filtro por cidade
