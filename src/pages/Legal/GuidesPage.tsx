@@ -164,12 +164,12 @@ export default function GuidesPage() {
       <div className="container mx-auto px-6 max-w-5xl py-16">
         {filteredGuides.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
-            {filter
+            {filteredGuides.map((guide) => (
+              <div 
                 key={guide.id} 
                 onClick={() => setSelectedGuide(guide)}
                 className="group cursor-pointer flex flex-col h-full p-6 rounded-xl bg-gradient-to-br from-magna-violet/10 to-transparent border border-magna-violet/20 hover:border-magna-cyan/50 hover:shadow-[0_0_30px_rgba(138,43,226,0.4)] transition-all backdrop-blur-sm"
-              
-              <div key={guide.id} className="group cursor-pointer flex flex-col h-full p-6 rounded-xl bg-gradient-to-br from-magna-violet/10 to-transparent border border-magna-violet/20 hover:border-magna-cyan/50 hover:shadow-[0_0_30px_rgba(138,43,226,0.4)] transition-all backdrop-blur-sm">
+              >
                 {/* Header do Card */}
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
@@ -201,6 +201,11 @@ export default function GuidesPage() {
               {searchTerm 
                 ? `Nenhum guia encontrado para "${searchTerm}"`
                 : 'Nenhum guia encontrado para sua busca.'
+              }
+            </p>
+          </div>
+        )}
+      </div>
 
       {/* Modal de Guia */}
       {selectedGuide && (
@@ -260,11 +265,6 @@ export default function GuidesPage() {
           </div>
         </div>
       )}
-              }
-            </p>
-          </div>
-        )}
-      </div>
     </div>
   );
 }
