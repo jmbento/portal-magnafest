@@ -255,10 +255,15 @@ export default function ListingDetailPage() {
                     Ver Perfil Completo
                   </button>
 
-                  <button className="w-full border border-magna-cyan text-magna-cyan hover:bg-magna-cyan hover:text-black py-3 rounded-xl font-bold transition-colors flex items-center justify-center gap-2">
+                  <a 
+                    href={`https://wa.me/55${listing.profiles.phone?.replace(/\D/g, '') || ''}?text=Olá! Vi seu anúncio "${listing.title}" no Portal MagnaFest e gostaria de mais informações.`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full border border-magna-cyan text-magna-cyan hover:bg-magna-cyan hover:text-black py-3 rounded-xl font-bold transition-colors flex items-center justify-center gap-2"
+                  >
                     <MessageCircle className="w-5 h-5" />
                     Enviar Mensagem
-                  </button>
+                  </a>
 
                   {listing.profiles.email && (
                     <a

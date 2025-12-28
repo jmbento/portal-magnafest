@@ -216,7 +216,10 @@ export default function MarketplacePage() {
                       <span className="text-xl font-bold text-[#00f0ff]">
                         {formatPrice(ad.price_min, ad.price_max)}
                       </span>
-                      <button className="text-xs text-white bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded transition-colors">
+                      <button 
+                        onClick={() => navigate(`/anuncio/${ad.id}`)}
+                        className="text-xs text-white bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded transition-colors"
+                      >
                         Ver Detalhes
                       </button>
                     </div>

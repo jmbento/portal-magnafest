@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Search, BookOpen, Shield, FileText, ArrowUpRight, Scale } from 'lucide-react';
+import { Search, BookOpen, Shield, FileText, ArrowUpRight, Scale, X, ExternalLink } from 'lucide-react';
 
 const GUIDES = [
   {
@@ -8,7 +8,29 @@ const GUIDES = [
     excerpt: "Descubra quais CNAEs são permitidos, limites de faturamento e como evitar bitributação na emissão de notas para eventos.",
     category: "Tributário",
     readTime: "5 min",
-    icon: FileText
+    icon: FileText,
+    content: `
+# MEI para Produtores de Eventos
+
+## 📋 O que é MEI?
+O Microempreendedor Individual (MEI) é uma categoria tributária simplificada para pequenos negócios com faturamento anual até R$ 81.000,00.
+
+## ✅ CNAEs Permitidos
+- **9329-8/01** - Produção de eventos
+- **9003-5/00** - Gestão de espaços
+- **8230-0/01** - Organização de feiras e eventos
+
+## 💰 Custos Mensais
+- INSS: R$ 66,00
+- ISS: R$ 5,00
+- **Total: R$ 71,00/mês**
+
+## 🚀 Como se cadastrar
+1. Acesse gov.br/empresas
+2. Clique em "Formalize-se"
+3. Processo leva 15 minutos
+    `,
+    officialLink: "https://www.gov.br/empresas-e-negocios/pt-br/empreendedor"
   },
   {
     id: 2,
@@ -16,7 +38,26 @@ const GUIDES = [
     excerpt: "A tabela atualizada de cobrança para música ao vivo e mecânica. Saiba calcular e não ser pego de surpresa.",
     category: "Jurídico",
     readTime: "8 min",
-    icon: Scale
+    icon: Scale,
+    content: `
+# ECAD - Direitos Autorais Musicais
+
+## 🎵 Quando é obrigatório?
+- Música ao vivo (bandas, DJs)
+- Música mecânica (playlist, Spotify)
+- Shows e festivais
+
+## 💰 Valores (2025)
+- Eventos até 500 pessoas: R$ 250
+- Eventos 500-2000: R$ 800
+- Acima de 2000: Consultar
+
+## 📝 Como declarar
+1. Acesse ecad.org.br
+2. Cadastre seu evento
+3. Pague via boleto ou Pix
+    `,
+    officialLink: "https://www.ecad.org.br"
   },
   {
     id: 3,
@@ -24,7 +65,28 @@ const GUIDES = [
     excerpt: "Como escrever projetos que são aprovados. O passo a passo da captação de recursos federais.",
     category: "Fomento",
     readTime: "12 min",
-    icon: BookOpen
+    icon: BookOpen,
+    content: `
+# Lei Rouanet - Incentivo à Cultura
+
+## 🎯 O que é?
+Lei Federal que permite empresas destinarem até 4% do IR para projetos culturais.
+
+## ✅ Quem pode usar
+- Produtores culturais
+- Artistas com CNPJ
+- Empresas de eventos
+
+## 📋 Processo
+1. Criar projeto no SALIC
+2. Aguardar aprovação (90-180 dias)
+3. Captar recursos
+4. Executar e prestar contas
+
+## 💡 Dica
+Projetos com impacto social têm mais chance de aprovação.
+    `,
+    officialLink: "https://www.gov.br/cultura/pt-br/assuntos/lei-rouanet"
   },
   {
     id: 4,
@@ -32,12 +94,31 @@ const GUIDES = [
     excerpt: "Cláusulas indispensáveis para proteger seu cachê e limitar sua responsabilidade civil em caso de acidentes.",
     category: "Blindagem",
     readTime: "6 min",
-    icon: Shield
+    icon: Shield,
+    content: `
+# Contratos para Eventos
+
+## 📝 Cláusulas Essenciais
+1. **Valor e forma de pagamento** - Adiantamento de 50%
+2. **Data, hora e local** - Especificar tudo
+3. **Rider técnico** - Equipamentos necessários
+4. **Cancelamento** - Multas e prazos
+
+## 🛡️ Proteção Legal
+- Seguro de responsabilidade civil
+- Cláusula de força maior
+- Limitação de responsabilidade
+
+## ⚠️ Atenção
+Sempre registre no cartório contratos acima de R$ 10.000.
+    `,
+    officialLink: null
   }
 ];
 
 export default function GuidesPage() {
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedGuide, setSelectedGuide] = useState<typeof GUIDES[0] | null>(null);
 
   const filteredGuides = GUIDES.filter(guide =>
     guide.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -83,7 +164,11 @@ export default function GuidesPage() {
       <div className="container mx-auto px-6 max-w-5xl py-16">
         {filteredGuides.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
-            {filteredGuides.map((guide) => (
+            {filter
+                key={guide.id} 
+                onClick={() => setSelectedGuide(guide)}
+                className="group cursor-pointer flex flex-col h-full p-6 rounded-xl bg-gradient-to-br from-magna-violet/10 to-transparent border border-magna-violet/20 hover:border-magna-cyan/50 hover:shadow-[0_0_30px_rgba(138,43,226,0.4)] transition-all backdrop-blur-sm"
+              
               <div key={guide.id} className="group cursor-pointer flex flex-col h-full p-6 rounded-xl bg-gradient-to-br from-magna-violet/10 to-transparent border border-magna-violet/20 hover:border-magna-cyan/50 hover:shadow-[0_0_30px_rgba(138,43,226,0.4)] transition-all backdrop-blur-sm">
                 {/* Header do Card */}
                 <div className="flex items-center justify-between mb-4">
@@ -116,6 +201,65 @@ export default function GuidesPage() {
               {searchTerm 
                 ? `Nenhum guia encontrado para "${searchTerm}"`
                 : 'Nenhum guia encontrado para sua busca.'
+
+      {/* Modal de Guia */}
+      {selectedGuide && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm" onClick={() => setSelectedGuide(null)}>
+          <div className="bg-gradient-to-br from-[#1a0b2e] to-magna-black border-2 border-magna-violet/50 rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            {/* Header */}
+            <div className="p-6 border-b border-magna-violet/30 flex items-start justify-between">
+              <div>
+                <span className="px-3 py-1 rounded-full text-xs font-medium border border-magna-violet/30 text-magna-violet bg-magna-violet/10">
+                  {selectedGuide.category}
+                </span>
+                <h2 className="text-2xl font-bold text-white mt-3">{selectedGuide.title}</h2>
+              </div>
+              <button 
+                onClick={() => setSelectedGuide(null)}
+                className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+              >
+                <X className="w-6 h-6 text-gray-400" />
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="p-6 overflow-y-auto max-h-[calc(90vh-200px)]">
+              <div className="prose prose-invert max-w-none">
+                {selectedGuide.content.split('\n').map((line, idx) => {
+                  if (line.startsWith('# ')) {
+                    return <h1 key={idx} className="text-3xl font-bold text-white mb-4">{line.replace('# ', '')}</h1>;
+                  }
+                  if (line.startsWith('## ')) {
+                    return <h2 key={idx} className="text-xl font-bold text-magna-cyan mt-6 mb-3">{line.replace('## ', '')}</h2>;
+                  }
+                  if (line.startsWith('- ')) {
+                    return <li key={idx} className="text-gray-300 ml-4">{line.replace('- ', '')}</li>;
+                  }
+                  if (line.trim() === '') {
+                    return <br key={idx} />;
+                  }
+                  return <p key={idx} className="text-gray-300 leading-relaxed mb-3">{line}</p>;
+                })}
+              </div>
+            </div>
+
+            {/* Footer */}
+            {selectedGuide.officialLink && (
+              <div className="p-6 border-t border-magna-violet/30">
+                <a 
+                  href={selectedGuide.officialLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-magna-violet to-magna-magenta hover:from-magna-magenta hover:to-magna-violet text-white font-semibold rounded-lg transition-all"
+                >
+                  <ExternalLink className="w-5 h-5" />
+                  Acessar Fonte Oficial
+                </a>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
               }
             </p>
           </div>

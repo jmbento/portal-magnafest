@@ -64,7 +64,7 @@ export default function Home() {
               <h2 className="text-3xl md:text-4xl font-bold uppercase tracking-wide mb-2">Quem você procura?</h2>
               <p className="text-gray-400">Encontre os melhores talentos para cada etapa da produção.</p>
             </div>
-            <a href="#" className="hidden md:flex items-center gap-2 text-magna-cyan hover:text-white transition-colors">
+            <a href="/cadastrar" className="hidden md:flex items-center gap-2 text-magna-cyan hover:text-white transition-colors">
               Ver todas as categorias <ArrowRight className="w-4 h-4" />
             </a>
           </div>
@@ -77,17 +77,21 @@ export default function Home() {
               { title: "Segurança", icon: <ShieldAlert />, count: "300+" },
               { title: "Produtores", icon: <Clapperboard />, count: "50+" },
               { title: "Staff & Recepção", icon: <Users />, count: "200+" },
-              { title: "Cenografia", icon: <Sparkles />, count: "40+" },
-              { title: "Bombeiros", icon: <ShieldAlert />, count: "90+" },
-              { title: "Agendas", icon: <CalendarDays />, count: "15+" },
+              { title: "Cenografia", icon: <Sparkles />, count: "40+", search: "cenógrafo" },
+              { title: "Bombeiros", icon: <ShieldAlert />, count: "90+", search: "bombeiro" },
+              { title: "Agendas", icon: <CalendarDays />, count: "15+", search: "artista" },
             ].map((cat, idx) => (
-              <div key={idx} className="group p-6 bg-magna-black border border-white/5 hover:border-magna-cyan/50 transition-all duration-300 cursor-pointer">
+              <a 
+                key={idx} 
+                href={`/profissionais?categoria=${encodeURIComponent(cat.search)}`}
+                className="group p-6 bg-magna-black border border-white/5 hover:border-magna-cyan/50 transition-all duration-300 cursor-pointer"
+              >
                 <div className="w-12 h-12 bg-white/5 rounded-lg flex items-center justify-center text-magna-violet group-hover:text-magna-cyan group-hover:scale-110 transition-all mb-4">
                   {cat.icon}
                 </div>
                 <h3 className="text-lg font-bold uppercase mb-1">{cat.title}</h3>
                 <span className="text-sm text-gray-500 group-hover:text-gray-300">{cat.count} Profissionais</span>
-              </div>
+              </a>
             ))}
           </div>
         </div>

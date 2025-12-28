@@ -178,9 +178,9 @@ export default function ProvidersPage() {
           <p className="text-gray-600 mb-6">
             Cadastre-se gratuitamente no nosso diretório e seja encontrado por produtores de eventos em todo o Brasil.
           </p>
-          <button className="btn-primary">
+          <a href="/cadastrar" className="btn-primary inline-block">
             Cadastrar Meu Perfil
-          </button>
+          </a>
         </div>
       </div>
     </main>
