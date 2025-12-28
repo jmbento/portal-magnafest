@@ -127,32 +127,31 @@ export default function GuidesPage() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#1a0b2e] via-[#16082a] to-magna-black text-white font-sans selection:bg-purple-900/30 relative overflow-hidden">
+    <div className="min-h-screen bg-gray-50 text-gray-900 font-serif selection:bg-blue-100 antialiased">
       
-      {/* Efeitos de luz vibrantes */}
-      <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-magna-violet/20 blur-[120px] rounded-full pointer-events-none animate-pulse"></div>
-      <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-magna-magenta/15 blur-[100px] rounded-full pointer-events-none animate-pulse delay-1000"></div>
-      
-      {/* HEADER EDITORIAL */}
-      <div className="pt-24 pb-16 border-b border-magna-violet/20 relative z-10">
-        <div className="container mx-auto px-6 max-w-5xl">
-          <span className="text-purple-400 font-medium tracking-widest text-xs uppercase mb-4 block">
-            Magna Intelligence
-          </span>
-          <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-white mb-6 leading-[1.1]">
-            Central de Inteligência
+      {/* HEADER DOCUMENTAL */}
+      <div className="pt-24 pb-12 bg-white border-b border-gray-200 shadow-sm">
+        <div className="container mx-auto px-6 max-w-4xl">
+          <div className="flex items-center gap-3 mb-6">
+            <Shield className="w-6 h-6 text-gray-600" />
+            <span className="text-gray-600 font-semibold tracking-wide text-sm uppercase">
+              Documentação Oficial
+            </span>
+          </div>
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
+            Central de Inteligência Jurídica
           </h1>
-          <p className="text-lg text-gray-400 leading-relaxed max-w-2xl font-light">
-            O "Oráculo" do produtor. Decodificamos leis, impostos e burocracias para que você foque apenas no show.
+          <p className="text-lg text-gray-700 leading-relaxed max-w-3xl">
+            Guias oficiais sobre tributação, direitos autorais, contratos e legislação para produtores de eventos. Informações técnicas e procedimentos regulamentados.
           </p>
 
-          {/* Search Input Minimalista */}
-          <div className="mt-10 relative max-w-lg">
-            <Search className="absolute left-0 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+          {/* Search Input Formal */}
+          <div className="mt-8 relative max-w-xl">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
             <input 
               type="text" 
-              placeholder="Busque por 'MEI', 'ECAD' ou 'Contrato'..."
-              className="w-full bg-transparent border-b border-white/10 py-3 pl-8 pr-4 text-white placeholder-gray-600 focus:outline-none focus:border-purple-500 transition-colors text-lg font-light"
+              placeholder="Pesquisar documentação (ex: MEI, ECAD, Contratos)..."
+              className="w-full bg-white border-2 border-gray-300 rounded-lg py-3 pl-12 pr-4 text-gray-900 placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -160,105 +159,115 @@ export default function GuidesPage() {
         </div>
       </div>
 
-      {/* GRID DE GUIAS */}
-      <div className="container mx-auto px-6 max-w-5xl py-16">
+      {/* GRID DE GUIAS DOCUMENTAIS */}
+      <div className="container mx-auto px-6 max-w-4xl py-12">
         {filteredGuides.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {filteredGuides.map((guide) => (
               <div 
                 key={guide.id} 
                 onClick={() => setSelectedGuide(guide)}
-                className="group cursor-pointer flex flex-col h-full p-6 rounded-xl bg-gradient-to-br from-magna-violet/10 to-transparent border border-magna-violet/20 hover:border-magna-cyan/50 hover:shadow-[0_0_30px_rgba(138,43,226,0.4)] transition-all backdrop-blur-sm"
+                className="group cursor-pointer flex flex-col h-full bg-white rounded-lg border-2 border-gray-200 hover:border-blue-400 hover:shadow-lg transition-all p-6"
               >
                 {/* Header do Card */}
                 <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-2">
-                     <span className="px-2 py-0.5 rounded text-[10px] font-medium tracking-wider uppercase border border-white/10 text-gray-400 group-hover:border-purple-500/30 group-hover:text-purple-400 transition-colors">
+                  <div className="flex items-center gap-3">
+                     <span className="px-3 py-1 rounded bg-gray-100 text-[11px] font-bold tracking-wider uppercase text-gray-700 border border-gray-300">
                        {guide.category}
                      </span>
-                     <span className="text-xs text-gray-600">• {guide.readTime}</span>
+                     <span className="text-xs text-gray-500 font-medium">• {guide.readTime}</span>
                   </div>
-                  <ArrowUpRight className="w-4 h-4 text-gray-700 group-hover:text-purple-400 transition-colors transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  <FileText className="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors" />
                 </div>
 
                 {/* Conteúdo */}
-                <h3 className="text-xl font-medium text-white mb-3 group-hover:text-purple-200 transition-colors">
+                <h3 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-blue-700 transition-colors leading-snug">
                   {guide.title}
                 </h3>
-                <p className="text-gray-400 text-sm leading-relaxed mb-6 flex-grow">
+                <p className="text-gray-600 text-sm leading-relaxed flex-grow font-sans">
                   {guide.excerpt}
                 </p>
 
-                {/* Linha Divisória Sutil */}
-                <div className="w-full h-px bg-white/5 group-hover:bg-purple-500/20 transition-colors mt-auto" />
+                {/* Footer */}
+                <div className="flex items-center gap-2 mt-4 pt-4 border-t border-gray-100">
+                  <BookOpen className="w-4 h-4 text-gray-400" />
+                  <span className="text-xs text-gray-500 font-medium">Clique para ler o documento completo</span>
+                </div>
               </div>
             ))}
           </div>
         ) : (
-          /* Empty State Sutil */
-          <div className="text-center py-20">
-            <p className="text-gray-500 font-light">
+          /* Empty State */
+          <div className="text-center py-16 bg-white rounded-lg border-2 border-dashed border-gray-300">
+            <Search className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+            <p className="text-gray-600 font-medium">
               {searchTerm 
-                ? `Nenhum guia encontrado para "${searchTerm}"`
-                : 'Nenhum guia encontrado para sua busca.'
+                ? `Nenhum documento encontrado para "${searchTerm}"`
+                : 'Nenhum documento encontrado.'
               }
             </p>
           </div>
         )}
       </div>
 
-      {/* Modal de Guia */}
+      {/* Modal DOCUMENTAL */}
       {selectedGuide && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm" onClick={() => setSelectedGuide(null)}>
-          <div className="bg-gradient-to-br from-[#1a0b2e] to-magna-black border-2 border-magna-violet/50 rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden shadow-2xl" onClick={(e) => e.stopPropagation()}>
-            {/* Header */}
-            <div className="p-6 border-b border-magna-violet/30 flex items-start justify-between">
-              <div>
-                <span className="px-3 py-1 rounded-full text-xs font-medium border border-magna-violet/30 text-magna-violet bg-magna-violet/10">
-                  {selectedGuide.category}
-                </span>
-                <h2 className="text-2xl font-bold text-white mt-3">{selectedGuide.title}</h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm" onClick={() => setSelectedGuide(null)}>
+          <div className="bg-white rounded-lg max-w-3xl w-full max-h-[90vh] overflow-hidden shadow-2xl border border-gray-200" onClick={(e) => e.stopPropagation()}>
+            {/* Header Formal */}
+            <div className="p-8 bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200 flex items-start justify-between">
+              <div className="flex-1">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="px-3 py-1 rounded bg-blue-100 text-xs font-bold tracking-wider uppercase text-blue-800 border border-blue-200">
+                    {selectedGuide.category}
+                  </span>
+                  <span className="text-sm text-gray-500 font-medium">{selectedGuide.readTime} de leitura</span>
+                </div>
+                <h2 className="text-2xl font-bold text-gray-900 leading-tight">{selectedGuide.title}</h2>
               </div>
               <button 
                 onClick={() => setSelectedGuide(null)}
-                className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                className="p-2 hover:bg-gray-200 rounded-lg transition-colors ml-4"
               >
-                <X className="w-6 h-6 text-gray-400" />
+                <X className="w-6 h-6 text-gray-600" />
               </button>
             </div>
 
-            {/* Content */}
-            <div className="p-6 overflow-y-auto max-h-[calc(90vh-200px)]">
-              <div className="prose prose-invert max-w-none">
+            {/* Content Documental */}
+            <div className="p-8 overflow-y-auto max-h-[calc(90vh-240px)] bg-white">
+              <div className="prose prose-gray max-w-none font-sans">
                 {selectedGuide.content.split('\n').map((line, idx) => {
                   if (line.startsWith('# ')) {
-                    return <h1 key={idx} className="text-3xl font-bold text-white mb-4">{line.replace('# ', '')}</h1>;
+                    return <h1 key={idx} className="text-3xl font-bold text-gray-900 mb-6 pb-3 border-b-2 border-gray-200">{line.replace('# ', '')}</h1>;
                   }
                   if (line.startsWith('## ')) {
-                    return <h2 key={idx} className="text-xl font-bold text-magna-cyan mt-6 mb-3">{line.replace('## ', '')}</h2>;
+                    return <h2 key={idx} className="text-xl font-bold text-gray-800 mt-8 mb-4 flex items-center gap-2">
+                      <span className="w-1 h-6 bg-blue-500 rounded"></span>
+                      {line.replace('## ', '')}
+                    </h2>;
                   }
                   if (line.startsWith('- ')) {
-                    return <li key={idx} className="text-gray-300 ml-4">{line.replace('- ', '')}</li>;
+                    return <li key={idx} className="text-gray-700 ml-6 mb-2 leading-relaxed">{line.replace('- ', '')}</li>;
                   }
                   if (line.trim() === '') {
-                    return <br key={idx} />;
+                    return <div key={idx} className="h-2" />;
                   }
-                  return <p key={idx} className="text-gray-300 leading-relaxed mb-3">{line}</p>;
+                  return <p key={idx} className="text-gray-700 leading-relaxed mb-4">{line}</p>;
                 })}
               </div>
             </div>
 
-            {/* Footer */}
+            {/* Footer Oficial */}
             {selectedGuide.officialLink && (
-              <div className="p-6 border-t border-magna-violet/30">
+              <div className="p-6 bg-gray-50 border-t-2 border-gray-200">
                 <a 
                   href={selectedGuide.officialLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-magna-violet to-magna-magenta hover:from-magna-magenta hover:to-magna-violet text-white font-semibold rounded-lg transition-all"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all shadow-sm"
                 >
                   <ExternalLink className="w-5 h-5" />
-                  Acessar Fonte Oficial
+                  Acessar Fonte Oficial do Governo
                 </a>
               </div>
             )}
