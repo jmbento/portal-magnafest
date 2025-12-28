@@ -67,19 +67,24 @@ export default function SignupPage() {
 
       if (authError) throw authError;
 
-      // 2. Criar perfil no banco
+      // 2. Criar perfil no banco (sem email - já vem do auth)
       if (authData.user) {
         const { error: profileError } = await supabase
           .from('profiles')
           .insert({
             id: authData.user.id,
             name: formData.name,
-            email: formData.email,
+            description: formData.category,
             trust_score: 100,
-            is_banned: false
+            is_verified: false
           });
 
-        if (profileError) throw profileError;
+        if (profileError) {
+          // Se erro for por perfil já existir, ignorar
+          if (!profileError.message.includes('duplicate') && !profileError.message.includes('already exists')) {
+            throw profileError;
+          }
+        }
       }
 
       // Sucesso! Redirecionar
