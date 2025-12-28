@@ -29,6 +29,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
+import { aiSeedingService } from '../../services/ai-seeding.service';
 
 // =====================================================================
 // TYPES
@@ -758,42 +759,56 @@ export default function SeederPage() {
     setLoading(true);
     clearLogs();
     addLog('🤖 Iniciando varredura IA de dados reais...', 'info');
-    addLog('⚠️ Funcionalidade em desenvolvimento!', 'warning');
 
     try {
-      // SIMULAÇÃO - Em produção, conectar com:
-      // 1. SerpAPI (Google Search)
-      // 2. Web Scraping (Sympla, Eventbrite, Facebook Events)
-      // 3. APIs públicas (Ticketmaster, Songkick)
-
-      addLog('🔍 Buscando eventos em Sympla...', 'info');
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      addLog('✅ 15 eventos encontrados no Sympla', 'success');
-
-      addLog('🔍 Buscando profissionais em Instagram...', 'info');
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      addLog('✅ 23 profissionais encontrados', 'success');
-
-      addLog('🔍 Buscando agendas em Facebook Events...', 'info');
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      addLog('✅ 8 eventos encontrados no Facebook', 'success');
-
-      addLog('⏳ Processando e inserindo dados...', 'info');
-      await new Promise(resolve => setTimeout(resolve, 2000));
-
-      // Inserir dados simulados
-      addLog('✅ 46 itens reais inseridos com sucesso!', 'success');
-      addLog('📊 Atualizando estatísticas...', 'info');
+      // Usar localização do usuário
+      const city = geoLocation?.city || 'São Paulo';
+      const state = geoLocation?.state || 'SP';
       
-      await loadStats();
+      addLog(`📍 Buscando dados em: ${city} - ${state}`, 'info');
 
-      // Verificar auto-limpeza
-      if (stats.profiles.real >= 200 || stats.events.real >= 200) {
-        addLog('🎯 Meta de 200 itens atingida! Iniciando auto-limpeza...', 'warning');
-        await autoCleanFakeData();
+      // Executar scraping real
+      addLog('🔍 Buscando eventos em Sympla...', 'info');
+      const results = await aiSeedingService.runFullScraping(city, state);
+
+      // Processar resultados
+      let totalInserted = 0;
+      
+      for (const result of results) {
+        if (result.success) {
+          const emoji = result.source === 'sympla' ? '🎟️' : 
+                       result.source === 'eventbrite' ? '🎫' : '📸';
+          const sourceName = result.source === 'sympla' ? 'Sympla' :
+                           result.source === 'eventbrite' ? 'Eventbrite' : 'Instagram';
+          
+          addLog(`${emoji} ${sourceName}: ${result.count} ${result.type === 'event' ? 'eventos' : 'profissionais'} inseridos`, 'success');
+          totalInserted += result.count;
+        } else {
+          addLog(`❌ Erro em ${result.source}: ${result.error}`, 'error');
+        }
+      }
+
+      if (totalInserted > 0) {
+        addLog(`✅ Total: ${totalInserted} itens reais inseridos!`, 'success');
+        addLog('📊 Atualizando estatísticas...', 'info');
+        
+        await loadStats();
+
+        // Verificar auto-limpeza
+        addLog('🔍 Verificando necessidade de auto-limpeza...', 'info');
+        const cleanResult = await aiSeedingService.checkAndCleanFakeData();
+        
+        if (cleanResult.cleaned) {
+          addLog('🎯 Meta de 200 itens atingida! Auto-limpeza executada.', 'warning');
+          addLog(`🗑️ Removidos: ${cleanResult.profilesRemoved} profissionais fake, ${cleanResult.eventsRemoved} eventos fake`, 'success');
+          await loadStats();
+        }
+      } else {
+        addLog('⚠️ Nenhum dado novo foi inserido (possíveis duplicatas)', 'warning');
       }
 
     } catch (error: any) {
+      console.error('Erro na varredura IA:', error);
       addLog(`❌ Erro: ${error.message}`, 'error');
     } finally {
       setLoading(false);
