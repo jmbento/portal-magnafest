@@ -384,16 +384,16 @@ SELECT USING (true);
 CREATE POLICY "Usuários podem criar seu próprio perfil" ON profiles FOR
 INSERT
 WITH
-    CHECK (auth.uid () = id);
+    CHECK (auth.uid()::uuid = id);
 
 -- Atualização: Usuários podem atualizar apenas seu próprio perfil
 CREATE POLICY "Usuários podem atualizar seu próprio perfil" ON profiles FOR
-UPDATE USING (auth.uid () = id)
+UPDATE USING (auth.uid()::uuid = id)
 WITH
-    CHECK (auth.uid () = id);
+    CHECK (auth.uid()::uuid = id);
 
 -- Exclusão: Usuários podem deletar apenas seu próprio perfil
-CREATE POLICY "Usuários podem deletar seu próprio perfil" ON profiles FOR DELETE USING (auth.uid () = id);
+CREATE POLICY "Usuários podem deletar seu próprio perfil" ON profiles FOR DELETE USING (auth.uid()::uuid = id);
 
 -- 8.3 Policies para CATEGORIES
 -- Leitura: Pública para todos

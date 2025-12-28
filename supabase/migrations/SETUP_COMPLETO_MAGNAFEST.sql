@@ -244,7 +244,7 @@ DROP POLICY IF EXISTS "Profiles públicos visíveis exceto banidos" ON public.pr
 CREATE POLICY "Profiles públicos visíveis exceto banidos" ON public.profiles FOR
 SELECT USING (
         is_banned = false
-        OR auth.uid () = id
+        OR auth.uid()::uuid = id
     );
 
 -- Listings

@@ -17,8 +17,8 @@ DROP POLICY IF EXISTS "Enable update for profile owner" ON public.profiles;
 CREATE POLICY "Allow users to update own profile" 
   ON public.profiles 
   FOR UPDATE 
-  USING (auth.uid() = id OR is_claimed = false)
-  WITH CHECK (auth.uid() = id OR is_claimed = false);
+  USING (auth.uid()::uuid = id OR is_claimed = false)
+  WITH CHECK (auth.uid()::uuid = id OR is_claimed = false);
 
 -- 3. Criar tabela de MÚLTIPLAS CATEGORIAS por profissional
 CREATE TABLE IF NOT EXISTS profile_categories (
@@ -48,7 +48,7 @@ CREATE POLICY "Users can delete own categories"
     EXISTS (
       SELECT 1 FROM profiles 
       WHERE profiles.id = profile_categories.profile_id 
-      AND profiles.id = auth.uid()
+      AND profiles.id = auth.uid()::uuid
     )
   );
 

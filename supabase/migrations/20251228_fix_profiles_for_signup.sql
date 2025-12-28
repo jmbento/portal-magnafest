@@ -40,7 +40,7 @@ CREATE POLICY "Enable insert for authenticated users"
   ON public.profiles 
   FOR INSERT 
   TO authenticated
-  WITH CHECK (auth.uid() = id);
+  WITH CHECK (auth.uid()::uuid = id);
 
 -- Allow users to update their own profile
 DROP POLICY IF EXISTS "Enable update for profile owner" ON public.profiles;
@@ -48,8 +48,8 @@ CREATE POLICY "Enable update for profile owner"
   ON public.profiles 
   FOR UPDATE 
   TO authenticated
-  USING (auth.uid() = id)
-  WITH CHECK (auth.uid() = id);
+  USING (auth.uid()::uuid = id)
+  WITH CHECK (auth.uid()::uuid = id);
 
 -- Function to auto-update updated_at
 CREATE OR REPLACE FUNCTION update_updated_at_column()

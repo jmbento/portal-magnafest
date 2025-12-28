@@ -124,7 +124,7 @@ SELECT USING (true);
 DROP POLICY IF EXISTS "Usuários podem atualizar próprio perfil" ON profiles;
 
 CREATE POLICY "Usuários podem atualizar próprio perfil" ON profiles FOR
-UPDATE USING (auth.uid () = id);
+UPDATE USING (auth.uid()::uuid = id);
 
 -- Policies para Blog Posts (todos podem ler)
 DROP POLICY IF EXISTS "Posts públicos" ON blog_posts;
@@ -145,12 +145,12 @@ DROP POLICY IF EXISTS "Usuários podem criar anúncios" ON listings;
 CREATE POLICY "Usuários podem criar anúncios" ON listings FOR
 INSERT
 WITH
-    CHECK (auth.uid () = profiles_id);
+    CHECK (auth.uid()::uuid = profiles_id);
 
 DROP POLICY IF EXISTS "Usuários podem editar próprios anúncios" ON listings;
 
 CREATE POLICY "Usuários podem editar próprios anúncios" ON listings FOR
-UPDATE USING (auth.uid () = profiles_id);
+UPDATE USING (auth.uid()::uuid = profiles_id);
 
 -- =====================================================
 -- 5. INSERIR PERFIS DE VENDEDORES

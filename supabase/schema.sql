@@ -40,14 +40,14 @@ SELECT USING (true);
 CREATE POLICY "Usuários autenticados podem criar eventos" ON events FOR
 INSERT
 WITH
-    CHECK (auth.uid () = user_id);
+    CHECK (auth.uid()::uuid = user_id);
 
 -- Policy: Atualização apenas pelo dono
 CREATE POLICY "Usuários podem editar seus próprios eventos" ON events FOR
-UPDATE USING (auth.uid () = user_id);
+UPDATE USING (auth.uid()::uuid = user_id);
 
 -- Policy: Exclusão apenas pelo dono
-CREATE POLICY "Usuários podem deletar seus próprios eventos" ON events FOR DELETE USING (auth.uid () = user_id);
+CREATE POLICY "Usuários podem deletar seus próprios eventos" ON events FOR DELETE USING (auth.uid()::uuid = user_id);
 
 -- =====================================================================
 -- PERFORMANCE: Índices
