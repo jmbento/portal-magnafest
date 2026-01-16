@@ -3,7 +3,7 @@
  * Login Page - Split-Screen Authentication
  * =====================================================================
  * Layout: 50% Showcase Image | 50% Login Form
- * 
+ *
  * SETUP DE IMAGEM:
  * 1. Baixe uma imagem de backstage/concert do Unsplash ou Pexels
  *    Sugestão: https://unsplash.com/s/photos/backstage-concert
@@ -11,26 +11,26 @@
  * 3. Dimensões recomendadas: 1920x1080px
  */
 
-import { useState, FormEvent } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { Mail, Lock, Loader2, AlertCircle, Eye, EyeOff } from 'lucide-react';
-import { supabase } from '../lib/supabase';
-import { useAuth } from '../contexts/AuthContext';
+import { useState, FormEvent } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { Mail, Lock, Loader2, AlertCircle, Eye, EyeOff } from "lucide-react";
+import { supabase } from "../lib/supabase";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  
+
   // States
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Redirect se já estiver autenticado
   if (user) {
-    navigate('/dashboard');
+    navigate("/dashboard");
     return null;
   }
 
@@ -44,33 +44,36 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const { data, error: authError } = await supabase.auth.signInWithPassword({
-        email,
-        password
-      });
+      const { data, error: authError } = await supabase.auth.signInWithPassword(
+        {
+          email,
+          password,
+        },
+      );
 
       if (authError) throw authError;
 
       if (data.user) {
-        console.log('✅ Login bem-sucedido:', data.user.email);
-        
-        // Verificar se é admin
-        const isAdmin = data.user.user_metadata?.role === 'admin';
-        
-        // Redirecionar
-        navigate(isAdmin ? '/admin/dashboard' : '/dashboard');
-      }
+        console.log("✅ Login bem-sucedido:", data.user.email);
 
+        // Verificar se é admin
+        const isAdmin = data.user.user_metadata?.role === "admin";
+
+        // Redirecionar
+        navigate(isAdmin ? "/admin/dashboard" : "/dashboard");
+      }
     } catch (err: any) {
-      console.error('❌ Erro no login:', err);
-      
+      console.error("❌ Erro no login:", err);
+
       // Mensagens de erro amigáveis
-      if (err.message?.includes('Invalid login credentials')) {
-        setError('Email ou senha incorretos. Verifique seus dados e tente novamente.');
-      } else if (err.message?.includes('Email not confirmed')) {
-        setError('Por favor, confirme seu email antes de fazer login.');
+      if (err.message?.includes("Invalid login credentials")) {
+        setError(
+          "Email ou senha incorretos. Verifique seus dados e tente novamente.",
+        );
+      } else if (err.message?.includes("Email not confirmed")) {
+        setError("Por favor, confirme seu email antes de fazer login.");
       } else {
-        setError(err.message || 'Erro ao fazer login. Tente novamente.');
+        setError(err.message || "Erro ao fazer login. Tente novamente.");
       }
     } finally {
       setLoading(false);
@@ -88,26 +91,29 @@ export default function LoginPage() {
           ============================================================ */}
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
         {/* Imagem de Fundo */}
-        <img 
+        <img
           src="/assets/login-bg.jpg"
           alt="Backstage"
           className="absolute inset-0 w-full h-full object-cover"
           onError={(e) => {
             // Fallback para Unsplash se imagem local não existir
-            e.currentTarget.src = 'https://source.unsplash.com/1920x1080/?backstage,concert,stage';
+            e.currentTarget.src =
+              "https://source.unsplash.com/1920x1080/?backstage,concert,stage";
           }}
         />
-        
+
         {/* Overlay Gradiente (garantir legibilidade) */}
         <div className="absolute inset-0 bg-gradient-to-t from-magna-black via-magna-black/20 to-transparent" />
-        
+
         {/* Copywriting */}
         <div className="absolute bottom-0 left-0 p-12 z-10">
           <h2 className="text-magna-cyan tracking-[0.2em] font-medium mb-2 uppercase text-sm">
             Bastidores
           </h2>
           <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight max-w-md">
-            Onde o espetáculo<br />começa.
+            Onde o espetáculo
+            <br />
+            começa.
           </h1>
           <p className="text-gray-300 mt-4 text-lg max-w-md">
             Acesse o maior hub de profissionais de eventos do Brasil
@@ -116,11 +122,12 @@ export default function LoginPage() {
 
         {/* Pattern Overlay (opcional) */}
         <div className="absolute inset-0 opacity-5">
-          <div 
+          <div
             className="w-full h-full"
             style={{
-              backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)',
-              backgroundSize: '30px 30px'
+              backgroundImage:
+                "radial-gradient(circle, white 1px, transparent 1px)",
+              backgroundSize: "30px 30px",
             }}
           />
         </div>
@@ -131,7 +138,6 @@ export default function LoginPage() {
           ============================================================ */}
       <div className="flex-1 flex flex-col justify-center px-4 sm:px-6 lg:px-20 xl:px-24 py-12">
         <div className="mx-auto w-full max-w-sm">
-          
           {/* Logo e Header */}
           <div className="text-center mb-8">
             <Link to="/" className="inline-block mb-6">
@@ -152,7 +158,6 @@ export default function LoginPage() {
 
           {/* Form */}
           <form onSubmit={handleLogin} className="space-y-6">
-            
             {/* Error Alert */}
             {error && (
               <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 flex items-start gap-3">
@@ -163,7 +168,10 @@ export default function LoginPage() {
 
             {/* Email Input */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-300 mb-2"
+              >
                 Email
               </label>
               <div className="relative">
@@ -183,14 +191,17 @@ export default function LoginPage() {
 
             {/* Password Input */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-300 mb-2"
+              >
                 Senha
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
                 <input
                   id="password"
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -204,7 +215,11 @@ export default function LoginPage() {
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors"
                   tabIndex={-1}
                 >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  {showPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
                 </button>
               </div>
             </div>
@@ -212,14 +227,14 @@ export default function LoginPage() {
             {/* Forgot Password Link */}
             <div className="flex items-center justify-between text-sm">
               <label className="flex items-center text-gray-400">
-                <input 
-                  type="checkbox" 
+                <input
+                  type="checkbox"
                   className="mr-2 rounded border-white/10 bg-magna-dark text-magna-violet focus:ring-magna-violet"
                 />
                 Lembrar de mim
               </label>
-              <Link 
-                to="/forgot-password" 
+              <Link
+                to="/forgot-password"
                 className="text-magna-cyan hover:text-magna-magenta transition-colors"
               >
                 Esqueci minha senha
@@ -238,7 +253,7 @@ export default function LoginPage() {
                   Entrando...
                 </>
               ) : (
-                'Entrar'
+                "Entrar"
               )}
             </button>
           </form>
@@ -246,9 +261,9 @@ export default function LoginPage() {
           {/* Footer Links */}
           <div className="mt-8 text-center">
             <p className="text-gray-400 text-sm">
-              Não tem uma conta?{' '}
-              <Link 
-                to="/cadastro" 
+              Não tem uma conta?{" "}
+              <Link
+                to="/cadastro"
                 className="text-magna-cyan hover:text-magna-magenta font-semibold transition-colors"
               >
                 Criar conta gratuita
@@ -265,26 +280,31 @@ export default function LoginPage() {
 
           {/* Social Login (Mock) */}
           <div className="space-y-3">
-            <button 
+            <button
               type="button"
               className="w-full py-3 px-4 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-lg transition-all flex items-center justify-center gap-3"
               disabled
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24">
-                <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                <path
+                  fill="currentColor"
+                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                />
+                <path
+                  fill="currentColor"
+                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                />
+                <path
+                  fill="currentColor"
+                  d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                />
+                <path
+                  fill="currentColor"
+                  d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                />
               </svg>
               Continuar com Google
             </button>
-          </div>
-
-          {/* Admin Demo Hint */}
-          <div className="mt-8 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
-            <p className="text-xs text-yellow-400 text-center">
-              💡 <strong>Demo:</strong> Use qualquer email/senha cadastrados no Supabase
-            </p>
           </div>
         </div>
       </div>
