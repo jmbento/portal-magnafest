@@ -39,10 +39,10 @@ export default function ProvidersPage() {
       const city = searchParams.get('city');
       const category = searchParams.get('cat');
 
+      // Query básica - ordenando apenas por created_at para evitar erro se is_claimed não existir
       let query = supabase
         .from('profiles')
         .select('*')
-        .order('is_claimed', { ascending: false })
         .order('created_at', { ascending: false });
 
       // Filtro por HABILIDADE/SERVIÇO (busca em description e name)
@@ -64,7 +64,25 @@ export default function ProvidersPage() {
 
       if (fetchError) throw fetchError;
 
-      setProviders(data || []);
+      // Mapear dados para garantir compatibilidade com o tipo Provider
+      const mappedProviders = (data || []).map((profile: any) => ({
+        ...profile,
+        // Garantir campos obrigatórios com fallbacks
+        slug: profile.slug || profile.id,
+        city: profile.city || 'Não informada',
+        state: profile.state || '',
+        category: profile.category || null,
+        description: profile.description || null,
+        is_verified: profile.is_verified || false,
+        is_claimed: profile.is_claimed || false,
+        whatsapp: profile.whatsapp || null,
+        avatar_url: profile.avatar_url || null,
+        logo_url: profile.logo_url || null,
+        favorites_count: profile.favorites_count || 0,
+        is_favorited: false,
+      }));
+
+      setProviders(mappedProviders);
     } catch (err: any) {
       console.error('Erro ao buscar profissionais:', err);
       setError(err.message || 'Erro ao carregar profissionais');

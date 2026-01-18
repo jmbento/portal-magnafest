@@ -29,6 +29,7 @@ interface Profile {
   whatsapp: string | null;
   instagram: string | null;
   service_categories: ServiceCategory | null;
+  is_registered?: boolean | null;
 }
 
 // =====================================================================
@@ -361,11 +362,28 @@ function ProfileCard({ profile }: ProfileCardProps) {
   const location = profile.city && profile.state 
     ? `${profile.city}, ${profile.state}` 
     : 'Localização não informada';
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyInvite = () => {
+    const link = `${window.location.origin}/signup?ref=${profile.slug}`;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(link).then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 3000);
+      }).catch(() => {
+        alert('Copiar link: ' + link);
+      });
+    } else {
+      alert('Copiar link: ' + link);
+    }
+  };
+
+  const registered = profile.is_registered !== false;
 
   return (
-    <div className="group relative bg-magna-dark border border-white/10 rounded-xl overflow-hidden hover:border-magna-cyan/50 hover:shadow-[0_0_20px_rgba(138,43,226,0.2)] transition-all duration-300">
+    <div className={`group relative bg-magna-dark border border-white/10 rounded-xl overflow-hidden hover:border-magna-cyan/50 hover:shadow-[0_0_20px_rgba(138,43,226,0.2)] transition-all duration-300 ${registered ? '' : 'opacity-95'}`}>
       {/* Avatar/Foto */}
-      <div className="h-48 bg-gradient-to-br from-magna-violet/20 to-magna-cyan/20 relative overflow-hidden">
+      <div className={`h-48 bg-gradient-to-br from-magna-violet/20 to-magna-cyan/20 relative overflow-hidden ${registered ? '' : 'filter grayscale'}`}>
         <div className="absolute inset-0 flex items-center justify-center">
           <Briefcase className="w-16 h-16 text-white/20" />
         </div>
@@ -373,12 +391,19 @@ function ProfileCard({ profile }: ProfileCardProps) {
         <div className="absolute top-4 right-4 px-3 py-1 bg-magna-violet/80 backdrop-blur-sm rounded-full">
           <span className="text-xs font-bold uppercase">{categoryName}</span>
         </div>
+
+        {/* Shadow badge */}
+        {!registered && (
+          <div className="absolute top-4 left-4 px-3 py-1 bg-yellow-400/90 text-black rounded-full">
+            <span className="text-xs font-bold">⚠️ Não Cadastrado</span>
+          </div>
+        )}
       </div>
 
       {/* Conteúdo */}
       <div className="p-6">
         {/* Nome */}
-        <h3 className="text-xl font-bold mb-2 line-clamp-1">
+        <h3 className={`text-xl font-bold mb-2 line-clamp-1 ${registered ? '' : 'text-yellow-300'}`}>
           {profile.name}
         </h3>
 
@@ -390,28 +415,52 @@ function ProfileCard({ profile }: ProfileCardProps) {
 
         {/* Descrição */}
         {profile.description && (
-          <p className="text-gray-400 text-sm line-clamp-2 mb-4">
+          <p className={`text-gray-400 text-sm line-clamp-2 mb-4 ${registered ? '' : 'blur-sm opacity-90'}`}>
             {profile.description}
           </p>
         )}
 
         {/* Ações */}
         <div className="flex gap-2">
-          <button className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-magna-violet text-white font-bold text-sm rounded-lg hover:bg-magna-magenta transition-colors">
-            Ver Perfil
-            <ExternalLink className="w-4 h-4" />
-          </button>
+          {registered ? (
+            <>
+              <button className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-magna-violet text-white font-bold text-sm rounded-lg hover:bg-magna-magenta transition-colors">
+                Ver Perfil
+                <ExternalLink className="w-4 h-4" />
+              </button>
 
-          {profile.whatsapp && (
-            <a
-              href={`https://wa.me/55${profile.whatsapp.replace(/\D/g, '')}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-4 py-2 bg-green-600 text-white font-bold text-sm rounded-lg hover:bg-green-700 transition-colors"
-              title="Chamar no WhatsApp"
-            >
-              💬
-            </a>
+              {profile.whatsapp && (
+                <a
+                  href={`https://wa.me/55${profile.whatsapp.replace(/\\D/g, '')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 bg-green-600 text-white font-bold text-sm rounded-lg hover:bg-green-700 transition-colors"
+                  title="Chamar no WhatsApp"
+                >
+                  💬
+                </a>
+              )}
+            </>
+          ) : (
+            // Shadow profile CTA: invite via WhatsApp if available, otherwise copy invite link
+            (profile.whatsapp && profile.whatsapp.trim() !== '') ? (
+              <a
+                href={`https://wa.me/55${profile.whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent(`Olá ${profile.name}, vi seu perfil no Portal MagnaFest e acho que você deveria se cadastrar para receber pedidos. Posso te enviar o link?`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-green-600 text-white font-bold text-sm rounded-lg hover:bg-green-700 transition-colors"
+              >
+                Convidar via WhatsApp
+              </a>
+            ) : (
+              <button
+                onClick={handleCopyInvite}
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-green-600 text-white font-bold text-sm rounded-lg hover:bg-green-700 transition-colors"
+                title="Copiar link de convite"
+              >
+                {copied ? 'Link copiado!' : 'Convidar / Copiar Link'}
+              </button>
+            )
           )}
         </div>
       </div>

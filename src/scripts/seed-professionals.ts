@@ -17,6 +17,9 @@ if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
 }
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+// Percentual de perfis registrados (0..1). Pode ser sobrescrito via env: SEED_PERCENT_REGISTERED
+const PERCENT_REGISTERED = process.env.SEED_PERCENT_REGISTERED ? Number(process.env.SEED_PERCENT_REGISTERED) : 0.7;
+console.log(`Seed: PERCENT_REGISTERED = ${PERCENT_REGISTERED}`);
 
 // Taxonomia e skills solicitados
 const CATEGORIES = {

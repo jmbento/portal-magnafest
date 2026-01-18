@@ -89,14 +89,31 @@ export default function AgendaPage() {
       const { data, error: fetchError } = await supabase
         .from('events')
         .select('*')
-        // .eq('status', 'published') // Coluna status ainda não existe
         .gte('starts_at', new Date().toISOString())
         .order('starts_at', { ascending: true })
         .limit(20);
 
       if (fetchError) throw fetchError;
 
-      setEvents(data || []);
+      // Mapear dados com fallbacks para garantir compatibilidade
+      const mappedEvents = (data || []).map((event: any) => ({
+        ...event,
+        // Fallbacks para campos obrigatórios
+        slug: event.slug || event.id,
+        starts_at: event.starts_at || event.event_date || new Date().toISOString(),
+        ends_at: event.ends_at || event.starts_at || event.event_date || new Date().toISOString(),
+        status: event.status || 'published',
+        format: event.format || 'in_person',
+        location_data: event.location_data || {},
+        cover_image_url: event.cover_image_url || null,
+      }));
+
+      // Filtrar apenas eventos publicados
+      const publishedEvents = mappedEvents.filter(
+        (e: any) => !e.status || e.status === 'published'
+      );
+
+      setEvents(publishedEvents);
     } catch (err: any) {
       console.error('Erro ao buscar eventos:', err);
       setError(err.message || 'Erro ao carregar agenda');

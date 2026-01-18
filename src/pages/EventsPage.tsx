@@ -32,19 +32,18 @@ export default function EventsPage() {
     setError(null);
 
     try {
-      // Query principal (sem tickets - relação não existe ainda)
+      // Query principal - sem filtro de status para evitar erro se coluna não existir
       const { data: eventsData, error: eventsError } = await supabase
         .from('events')
         .select('*')
-        .eq('status', 'published')
         .gte('starts_at', new Date().toISOString())
         .order('starts_at', { ascending: true })
         .limit(12);
 
       if (eventsError) throw eventsError;
 
-      // Processar dados para incluir campos calculados
-      const processedEvents: Event[] = (eventsData || []).map((event) => {
+      // Processar dados para incluir campos calculados e fallbacks
+      const processedEvents: Event[] = (eventsData || []).map((event: any) => {
         const tickets = event.tickets || [];
         const activeTickets = tickets.filter((t: any) => t.active);
 
@@ -60,13 +59,28 @@ export default function EventsPage() {
 
         return {
           ...event,
+          // Fallbacks para campos obrigatórios
+          slug: event.slug || event.id,
+          starts_at: event.starts_at || event.event_date || new Date().toISOString(),
+          ends_at: event.ends_at || event.starts_at || event.event_date || new Date().toISOString(),
+          status: event.status || 'published',
+          format: event.format || 'in_person',
+          location_data: event.location_data || {},
+          cover_image_url: event.cover_image_url || null,
+          short_description: event.short_description || event.description || null,
+          // Campos calculados
           tickets_count: tickets.length,
           min_price,
           available_tickets,
         };
       });
 
-      setEvents(processedEvents);
+      // Filtrar apenas eventos publicados (se coluna existir)
+      const publishedEvents = processedEvents.filter(
+        (e) => !e.status || e.status === 'published'
+      );
+
+      setEvents(publishedEvents);
     } catch (err: any) {
       console.error('Erro ao buscar eventos:', err);
       setError(err.message || 'Erro ao carregar eventos');

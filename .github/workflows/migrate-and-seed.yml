@@ -1,0 +1,39 @@
+name: Migrate and Seed
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  migrate-and-seed:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Apply SQL migrations (if DATABASE_URL provided)
+        if: ${{ secrets.DATABASE_URL != '' }}
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+          echo "Applying aggregated migrations..."
+          psql "$DATABASE_URL" -f supabase/AGGREGATED_MIGRATIONS.sql
+
+      - name: Run seed script (if SUPABASE_URL and SERVICE ROLE provided)
+        if: ${{ secrets.SUPABASE_URL != '' && secrets.SUPABASE_SERVICE_ROLE_KEY != '' }}
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SEED_PERCENT_REGISTERED: ${{ secrets.SEED_PERCENT_REGISTERED || '0.8' }}
+        run: |
+          echo "Running TypeScript seed..."
+          npx ts-node src/scripts/seed-professionals.ts
